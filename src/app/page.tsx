@@ -1,46 +1,45 @@
 import client from '@/src/lib/sanityClient';
-import { POSTS_QUERY } from '@/src/sanity/queries';
+import { HOME_PAGE_QUERY } from '@/src/sanity/queries/page';
 
-interface Post {
-  _id: string;
-  title: string;
-  slug: {
-    current: string;
-  };
-}
+import Navbar from '@/src/components/Layout/Navbar';
+import Footer from '@/src/components/Layout/Footer';
+
+import Hero from '@/src/components/Sections/Hero';
+import Experience from '@/src/components/Sections/Experience';
+import Projects from '@/src/components/Sections/Projects';
+import Contact from '@/src/components/Sections/Contact';
 
 export default async function HomePage() {
-  try {
-    console.log('Environment Variables:', {
-      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET
-    });
+  const page = await client.fetch(HOME_PAGE_QUERY);
 
-    const posts = await client.fetch(POSTS_QUERY);
-    console.log('Sanity API Response:', {
-      query: POSTS_QUERY,
-      response: posts
-    });
-    
-    return (
+  return (
+    <>
+      <Navbar />
+
       <main>
-       
-          <ul>
-            {posts.map((post: Post) => (
-              <li key={post._id}>
-                <h2>{post.title}</h2>
-              </li>
-            ))}
-          </ul>
-      </main>
-    );
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return (
-      <div>
-        <p>Error loading posts. Check the console for details.</p>
-        <pre>{error instanceof Error ? error.message : 'Unknown error'}</pre>
-      </div>
-    );
-  }
+  {page?.sections?.length ? (
+    page.sections.map((section: any, index: number) => {
+      switch (section._type) {
+        case 'hero':
+          return <Hero key={index} data={section} />;
+        case 'experienceSection':
+          return <Experience key={index} data={section} />;
+        case 'projectsSection':
+          return <Projects key={index} data={section} />;
+        case 'contactSection':
+          return <Contact key={index} data={section} />;
+        default:
+          return null;
+      }
+    })
+  ) : (
+    <p className="text-center py-20 text-gray-500">
+      No sections found. Check your Sanity CMS content.
+    </p>
+  )}
+</main>
+
+      <Footer />
+    </>
+  );
 }
