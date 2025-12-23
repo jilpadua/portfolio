@@ -33,8 +33,8 @@ export default async function HomePage() {
       }
     })
   ) : (
-    <p className="text-center py-20 text-gray-500">
-        🚧 Portfolio in development — content coming soon!
+    <p className="flex items-center justify-center h-screen text-center text-gray-500 text-lg">
+      🚧 Portfolio in development — content coming soon!
     </p>
   )}
 </main>
