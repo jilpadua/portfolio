@@ -34,7 +34,7 @@ export default async function HomePage() {
     })
   ) : (
     <p className="text-center py-20 text-gray-500">
-      No sections found. Check your Sanity CMS content.
+        🚧 Portfolio in development — content coming soon!
     </p>
   )}
 </main>
