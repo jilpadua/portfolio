@@ -1,50 +1,58 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { urlForImage } from '@/src/lib/image';
+import Link from 'next/link'
 
-export default function Hero({ data }: any) {
+type HeroProps = {
+  data: {
+    name: string
+    role: string
+    profileSummary: string
+    cvUrl?: string
+  } | null
+}
+
+export default function Hero({ data }: HeroProps) {
+  if (!data) return null
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden">
-      {data.backgroundImage && (
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={urlForImage(data.backgroundImage).url()}
-            alt={data.title || 'Hero background'}
-            fill
-            className="object-cover opacity-20"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/30" />
-        </div>
-      )}
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden"
+    >
+      {/* Background gradient (no image since schema has none) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/40" />
+
       <div className="container mx-auto px-6 relative z-10 text-center">
+        {/* Role pill */}
         <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-800/80 backdrop-blur-sm mb-6">
-          <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+          <span className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
           <span className="text-sm font-medium">{data.role}</span>
         </div>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">{data.title}</h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">{data.description}</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {data.primaryButton && (
+
+        {/* Name */}
+       <h1 className="font-inter font-semibold tracking-tight text-[2rem] sm:text-5xl md:text-6xl whitespace-nowrap mb-6">
+          {data.name}
+        </h1>
+
+        {/* Profile summary */}
+        <p className="text-muted-foreground text-md mb-8 max-w-2xl leading-relaxed mx-auto">
+          {data.profileSummary}
+        </p>
+
+        {/* CTA */}
+        {data.cvUrl && (
+          <div className="flex justify-center">
             <Link
-              href={data.primaryButton.link || '#'}
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
+              href={data.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-blue-900/100 hover:bg-blue-900/50 transition-colors duration-200"
             >
-              {data.primaryButton.text}
+              Download CV
             </Link>
-          )}
-          {data.secondaryButton && (
-            <Link
-              href={data.secondaryButton.link || '#'}
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-transparent border border-gray-600 hover:bg-gray-800 transition-colors duration-200"
-            >
-              {data.secondaryButton.text}
-            </Link>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
-  );
+  )
 }
