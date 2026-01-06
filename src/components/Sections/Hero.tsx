@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 type HeroProps = {
   data: {
@@ -12,6 +13,21 @@ type HeroProps = {
 }
 
 export default function Hero({ data }: HeroProps) {
+  const [sanitizedSummary, setSanitizedSummary] = useState('')
+
+  useEffect(() => {
+    if (!data) return
+
+    // Import DOMPurify dynamically (only in browser)
+    import('dompurify').then((DOMPurify) => {
+      const clean = DOMPurify.default.sanitize(data.profileSummary, {
+        ALLOWED_TAGS: ['strong', 'em', 'br'],
+        ALLOWED_ATTR: [],
+      })
+      setSanitizedSummary(clean)
+    })
+  }, [data])
+
   if (!data) return null
 
   return (
@@ -19,9 +35,7 @@ export default function Hero({ data }: HeroProps) {
       id="hero"
       className="relative min-h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden"
     >
-      {/* Background gradient (no image since schema has none) */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/40" />
-
       <div className="container mx-auto px-6 relative z-10 text-center">
         {/* Role pill */}
         <div className="inline-flex items-center px-4 py-2 rounded-full bg-gray-800/80 backdrop-blur-sm mb-6">
@@ -30,14 +44,17 @@ export default function Hero({ data }: HeroProps) {
         </div>
 
         {/* Name */}
-       <h1 className="font-inter font-semibold tracking-tight text-[2rem] sm:text-5xl md:text-6xl whitespace-nowrap mb-6">
+        <h1 className="font-inter font-semibold tracking-tight text-[2rem] sm:text-5xl md:text-6xl whitespace-nowrap mb-6">
           {data.name}
         </h1>
 
         {/* Profile summary */}
-        <p className="text-muted-foreground text-md mb-8 max-w-2xl leading-relaxed mx-auto">
-          {data.profileSummary}
-        </p>
+        {sanitizedSummary && (
+          <p
+            className="text-gray-400 text-md mb-8 max-w-2xl leading-relaxed mx-auto"
+            dangerouslySetInnerHTML={{ __html: sanitizedSummary }}
+          />
+        )}
 
         {/* CTA */}
         {data.cvUrl && (
