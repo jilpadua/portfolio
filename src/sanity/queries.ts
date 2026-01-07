@@ -8,45 +8,39 @@ export const heroQuery = groq`
     cvUrl
   }
 `
-
-// export const experienceQuery = groq`
-//   *[_type == "experience"] | order(startDate desc){
-//     organization,
-//     role,
-//     startDate,
-//     endDate,
-//     isPresent
-//   }
-// `
-
-// export const projectsQuery = groq`
-//   *[_type == "project"]{
-//     name,
-//     description,
-//     techStack,
-//     projectType
-//   }
-// `
-
-// export const certificatesQuery = groq`
-//   *[_type == "certificate"] | order(date desc){
-//     title,
-//     issuer,
-//     date,
-//     link,
-//     type
-//   }
-// `
-
-// export const contactQuery = groq`
-//   *[_type == "contact"][0]{
-//     email,
-//     phone,
-//     location,
-//     contactMessage
-//   }
-// `
-
+export const aboutQuery = groq`
+  *[_type == "about"][0]{
+    headline,
+    summary,
+    focus,
+    careerGoal
+  }
+`
+export const skillsQuery = groq`
+  *[_type == "skill"] | order(category asc, name asc) {
+    name,
+    category
+  }
+`
+export const projectsQuery = groq`
+  *[_type == "project"] | order(_createdAt desc) {
+    title,
+    description,
+    techStack,
+    projectType,
+    liveUrl,
+    githubUrl
+  }
+`
+export const experienceQuery = groq`
+  *[_type == "experience"] | order(startDate desc) {
+    company,
+    role,
+    startDate,
+    endDate,
+    description
+  }
+`
 export const footerQuery = groq`
   *[_type == "footer"][0]{
     socialLinks[]{
