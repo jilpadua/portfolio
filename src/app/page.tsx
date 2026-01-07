@@ -1,10 +1,12 @@
 import { client } from '@/src/sanity/client'
-import { heroQuery } from '@/src/sanity/queries'
-import { aboutQuery } from '@/src/sanity/queries'
-import { skillsQuery } from '@/src/sanity/queries'
-import { projectsQuery } from '@/src/sanity/queries'
-import { experienceQuery } from '@/src/sanity/queries'
-import { footerQuery } from '@/src/sanity/queries'
+import {
+  heroQuery,
+  aboutQuery,
+  skillsQuery,
+  projectsQuery,
+  experienceQuery,
+  footerQuery,
+} from '@/src/sanity/queries'
 
 import Hero from '@/src/components/Sections/Hero'
 import About from '@/src/components/Sections/About'
@@ -23,14 +25,19 @@ export default async function HomePage() {
   const footer = await client.fetch(footerQuery)
 
   return (
-    <>
+    <main className="text-white">
       <Navbar />
-      <Hero data={hero} />
-      <About data={about} />
-      <Skills data={skills} />
-      <Projects data={projects} />
-      <Experience data={experience} />
-      <Footer data={footer}/>
-    </>
+
+      {/* Unified background */}
+      <div className="bg-black/90">
+        <Hero data={hero} />
+        <About data={about} />
+        <Skills data={skills} />
+        <Projects data={projects} />
+        <Experience data={experience} />
+      </div>
+
+      <Footer data={footer} />
+    </main>
   )
 }
