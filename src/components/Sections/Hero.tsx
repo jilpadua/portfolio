@@ -33,7 +33,7 @@ export default function Hero({ data }: HeroProps) {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center text-white overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/40" />
       <div className="container mx-auto px-6 relative z-10 text-center">
@@ -64,7 +64,7 @@ export default function Hero({ data }: HeroProps) {
               href={data.cvUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-blue-900/100 hover:bg-blue-900/50 transition-colors duration-200"
+              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-blue-900/90 hover:bg-gray-900/100 transition-colors duration-200"
             >
               View Resume (PDF)
             </Link>
