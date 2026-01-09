@@ -56,7 +56,15 @@ export default function Projects({ data }: ProjectsProps) {
   }
 
   return (
-    <section ref={sectionRef} className="my-16">
+    <section
+      ref={sectionRef}
+      id="projects"
+      className={`
+        py-28 md:py-36
+        transition-all duration-1000 ease-out
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+      `}
+    >
       {/* Section title */}
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center tracking-tight">
         Projects
