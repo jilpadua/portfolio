@@ -23,13 +23,14 @@ export const skillsQuery = groq`
   }
 `
 export const projectsQuery = groq`
-  *[_type == "project"] | order(_createdAt desc) {
+  *[_type == "project"] | order(order asc, _createdAt desc) {
     title,
-    description,
-    techStack,
+    summary,
     projectType,
+    techStack,
     liveUrl,
-    githubUrl
+    githubUrl,
+    "imageUrl": image.asset->url
   }
 `
 export const experienceQuery = groq`
