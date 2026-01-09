@@ -57,8 +57,8 @@ export default function Experience({ data }: ExperienceProps) {
     >
       <div className="max-w-5xl mx-auto px-6">
         {/* Section title */}
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center tracking-tight">
-          Experience
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center tracking-tight text-white">
+          Timeline
         </h2>
 
         <div className="w-16 h-1 bg-blue-500 mx-auto mb-12 rounded-full" />
@@ -72,20 +72,27 @@ export default function Experience({ data }: ExperienceProps) {
 
               {/* Content Card */}
               <div className="group bg-gray-800/40 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:border-blue-500/30 transition-colors break-words">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 flex-wrap">
-                  <h3 className="text-lg font-semibold break-words">{item.role}</h3>
+                {/* Role & Date */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1 flex-wrap">
+                  <h3 className="text-sm text-gray-300 font-medium break-words">{item.role}</h3>
                   {(item.startDate || item.endDate) && (
-                    <span className="text-sm text-gray-400 break-words">
+                    <span className="text-sm text-gray-400 break-words whitespace-nowrap">
                       {formatDate(item.startDate)}{' '}
                       {item.endDate ? `– ${formatDate(item.endDate)}` : '– Present'}
                     </span>
                   )}
                 </div>
 
-                <p className="text-sm text-gray-300 mb-2 font-medium break-words">{item.company}</p>
+                {/* Company / School Highlight */}
+                <p className="text-lg md:text-xl text-blue-400 font-bold mb-2 break-words">
+                  {item.company}
+                </p>
 
+                {/* Description */}
                 {item.description && (
-                  <p className="text-sm text-gray-300 leading-relaxed break-words">{item.description}</p>
+                  <p className="text-sm text-gray-300 leading-relaxed break-words">
+                    {item.description}
+                  </p>
                 )}
               </div>
             </div>
