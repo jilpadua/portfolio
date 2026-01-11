@@ -42,11 +42,11 @@ export const experienceQuery = groq`
     description
   }
 `
-export const footerQuery = groq`
-  *[_type == "footer"][0]{
-    socialLinks[]{
-      label,
-      url
-    }
+export const footerQuery = `
+  *[_type == "contact"][0]{
+    email,
+    linkedin,
+    github
   }
 `
+
