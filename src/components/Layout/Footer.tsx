@@ -1,5 +1,7 @@
 'use client'
 
+import { Mail, Linkedin, Github } from 'lucide-react'
+
 type ContactData = {
   email?: string
   linkedin?: string
@@ -30,20 +32,20 @@ export default function Footer({ data }: FooterProps) {
           Let’s Work Together
         </h2>
 
-        <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+        <p className="text-gray-400 mb-10 max-w-xl mx-auto">
           Open to opportunities, collaborations, and conversations.
         </p>
 
         {/* Email (primary CTA) */}
         {data.email && (
-          <p className="text-lg md:text-xl font-medium mb-10">
-            <a
-              href={`mailto:${data.email}`}
-              className="underline underline-offset-4 decoration-blue-500 hover:text-blue-400 transition-colors"
-            >
-              {data.email}
-            </a>
-          </p>
+          <a
+            href={`mailto:${data.email}`}
+            className="inline-flex items-center gap-3 text-lg md:text-xl font-medium underline underline-offset-4 decoration-blue-500 hover:text-blue-400 transition-colors mb-12"
+            aria-label="Send an email"
+          >
+            <Mail className="w-5 h-5" aria-hidden="true" />
+            {data.email}
+          </a>
         )}
 
         {/* Social links */}
@@ -53,9 +55,10 @@ export default function Footer({ data }: FooterProps) {
               href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2 rounded-full border border-white/10 text-sm text-gray-300 hover:border-blue-500/40 hover:text-blue-400 transition-colors"
-              aria-label="LinkedIn profile"
+              aria-label="Visit LinkedIn profile"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 text-sm text-gray-300 hover:border-blue-500/40 hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
+              <Linkedin className="w-4 h-4" aria-hidden="true" />
               LinkedIn
             </a>
           )}
@@ -65,9 +68,10 @@ export default function Footer({ data }: FooterProps) {
               href={data.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2 rounded-full border border-white/10 text-sm text-gray-300 hover:border-blue-500/40 hover:text-blue-400 transition-colors"
-              aria-label="GitHub profile"
+              aria-label="Visit GitHub profile"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 text-sm text-gray-300 hover:border-blue-500/40 hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
+              <Github className="w-4 h-4" aria-hidden="true" />
               GitHub
             </a>
           )}
@@ -78,7 +82,7 @@ export default function Footer({ data }: FooterProps) {
 
         {/* Copyright */}
         <p className="text-sm text-gray-500">
-          © {currentYear} Your Name. All rights reserved.
+          © {currentYear} Jilmer Padua. All rights reserved.
         </p>
       </div>
     </footer>
