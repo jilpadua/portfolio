@@ -16,8 +16,9 @@ export default function Navbar() {
         <div className="hidden md:flex space-x-6">
           <Link href="#hero" className="text-gray-200 hover:text-white">Home</Link>
           <Link href="#about" className="text-gray-200 hover:text-white">About</Link>
-          <Link href="#projects" className="text-gray-200 hover:text-white">Projects</Link>
+          <Link href="#project" className="text-gray-200 hover:text-white">Projects</Link>
           <Link href="#experience" className="text-gray-200 hover:text-white">Experience</Link>
+          <Link href="#contact" className="text-gray-200 hover:text-white">Contact</Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -56,8 +57,9 @@ export default function Navbar() {
         <div className="md:hidden bg-gray-900 border-t border-gray-800">
           <div className="flex flex-col px-6 py-4 space-y-4">
             <Link href="#hero" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">Home</Link>
-            <Link href="#experience" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">Experience</Link>
+            <Link href="#about" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">About</Link>
             <Link href="#projects" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">Projects</Link>
+            <Link href="#experience" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">Experience</Link>
             <Link href="#contact" onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">Contact</Link>
           </div>
         </div>
