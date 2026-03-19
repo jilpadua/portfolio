@@ -5,7 +5,7 @@ import {
   skillsQuery,
   projectsQuery,
   experienceQuery,
-  contactQuery,
+  footerQuery,
 } from '@/src/sanity/queries'
 
 import Hero from '@/src/components/Sections/Hero'
@@ -22,7 +22,7 @@ export default async function HomePage() {
   const skills = await client.fetch(skillsQuery)
   const projects = await client.fetch(projectsQuery)
   const experience = await client.fetch(experienceQuery)
-  const footer = await client.fetch(contactQuery)
+  const footer = await client.fetch(footerQuery)
 
   return (
     <main className="text-white">

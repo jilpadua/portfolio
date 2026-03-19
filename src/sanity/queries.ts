@@ -23,9 +23,9 @@ export const skillsQuery = groq`
   }
 `
 export const projectsQuery = groq`
-  *[_type == "project"] | order(coalesce(order, 999) asc, _createdAt desc) {
+  *[_type == "project"] | order(order asc, _createdAt desc) {
     title,
-    "summary": description,
+    summary,
     projectType,
     techStack,
     liveUrl,
@@ -42,7 +42,7 @@ export const experienceQuery = groq`
     description
   }
 `
-export const contactQuery = groq`
+export const footerQuery = `
   *[_type == "contact"][0]{
     email,
     linkedin,
