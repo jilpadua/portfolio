@@ -29,16 +29,15 @@ export default async function HomePage() {
       <Navbar />
 
       {/* Unified background */}
-     {/* <div className="bg-black/90">
+     <div className="bg-black/90">
         <Hero data={hero} />
         <About data={about} />
         <Skills data={skills} />
         <Projects data={projects} />
-        <Experience data={experience} /> */}
-        <p>🚧</p>
+        <Experience data={experience} />
       </div>
 
-      {/*<Footer data={footer} />*/}
+      <Footer data={footer} />
     </main>
   )
 }
