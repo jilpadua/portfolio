@@ -1,8 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { matchContributionsToNode } from '@/lib/case-study'
-import type { ArchitectureGraph, ArchitectureNode } from '@/lib/sanity/types'
+import {
+  deriveNodeTechnology,
+  matchContributionsToNode,
+} from '@/lib/case-study'
+import type { ArchitectureGraph, ArchitectureNode, TechGroup } from '@/lib/sanity/types'
 import { ArchitectureLegend } from './ArchitectureLegend'
 import { ArchitectureNodeDetail } from './ArchitectureNodeDetail'
 import { ArchitectureTextFlow } from './ArchitectureTextFlow'
@@ -20,6 +23,9 @@ type ArchitectureExplorerProps = {
   graph: ArchitectureGraph
   projectTitle: string
   contributions?: string[]
+  techGroups?: TechGroup[]
+  clearSelectionSignal?: number
+  onSelectionChange?: (hasSelection: boolean) => void
 }
 
 const MIN_SCALE = 0.75
@@ -30,6 +36,9 @@ export function ArchitectureExplorer({
   graph,
   projectTitle,
   contributions,
+  techGroups,
+  clearSelectionSignal = 0,
+  onSelectionChange,
 }: ArchitectureExplorerProps) {
   const nodes = graph.nodes ?? []
   const connections = graph.connections ?? []
@@ -49,6 +58,16 @@ export function ArchitectureExplorer({
     ? getConnectedNodeIds(selectedId, connections)
     : new Set<string>()
 
+  useEffect(() => {
+    if (clearSelectionSignal > 0) {
+      setSelectedId(null)
+    }
+  }, [clearSelectionSignal])
+
+  useEffect(() => {
+    onSelectionChange?.(selectedId !== null)
+  }, [onSelectionChange, selectedId])
+
   const relatedLabels = useMemo(() => {
     if (!selectedId) return []
     return Array.from(connectedIds)
@@ -61,6 +80,11 @@ export function ArchitectureExplorer({
     if (!selectedNode) return []
     return matchContributionsToNode(selectedNode, contributions)
   }, [contributions, selectedNode])
+
+  const derivedTechnology = useMemo(() => {
+    if (!selectedNode) return null
+    return deriveNodeTechnology(selectedNode, techGroups)
+  }, [selectedNode, techGroups])
 
   const selectNode = useCallback((nodeId: string) => {
     setSelectedId((current) => (current === nodeId ? null : nodeId))
@@ -85,11 +109,6 @@ export function ArchitectureExplorer({
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setSelectedId(null)
-        return
-      }
-
       if (!orderedNodes.length) return
       const currentIndex = selectedId
         ? orderedNodes.findIndex((node) => node.id === selectedId)
@@ -143,7 +162,7 @@ export function ArchitectureExplorer({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="mono-label">Architecture explorer · {projectTitle}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="hidden flex-wrap gap-2 md:flex">
           <ControlButton label="Reset view" onClick={resetView} />
           <ControlButton
             label="Zoom out"
@@ -157,9 +176,12 @@ export function ArchitectureExplorer({
         </div>
       </div>
 
-      <ArchitectureTextFlow graph={graph} className="rounded-md border border-border bg-surface/60 p-4" />
+      <ArchitectureTextFlow
+        graph={graph}
+        className="rounded-md border border-border bg-surface/60 p-4"
+      />
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+      <div className="grid gap-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div
           ref={viewportRef}
           className="relative min-h-[320px] overflow-hidden rounded-md border border-border bg-background/70 md:min-h-[420px] md:cursor-grab md:active:cursor-grabbing"
@@ -170,7 +192,7 @@ export function ArchitectureExplorer({
           aria-label="Interactive architecture diagram"
         >
           <div
-            className="hidden md:block absolute inset-0 origin-center transition-transform duration-200 motion-reduce:transition-none"
+            className="absolute inset-0 hidden origin-center transition-transform duration-200 motion-reduce:transition-none md:block"
             style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
           >
             <DesktopDiagram
@@ -183,7 +205,7 @@ export function ArchitectureExplorer({
             />
           </div>
 
-          <div className="md:hidden p-4">
+          <div className="p-4 md:hidden">
             <MobileDiagram
               layout={layout}
               selectedId={selectedId}
@@ -197,6 +219,7 @@ export function ArchitectureExplorer({
           node={selectedNode}
           relatedLabels={relatedLabels}
           matchedContributions={matchedContributions}
+          derivedTechnology={derivedTechnology}
         />
       </div>
 
@@ -204,7 +227,7 @@ export function ArchitectureExplorer({
 
       <div className="sr-only" aria-live="polite">
         {selectedNode
-          ? `Selected ${selectedNode.label}. ${relatedLabels.length ? `Connected systems: ${relatedLabels.join(', ')}` : ''}${matchedContributions.length ? `. Your involvement: ${matchedContributions.join(', ')}` : ''}`
+          ? `Selected ${selectedNode.label}. ${relatedLabels.length ? `Connected systems: ${relatedLabels.join(', ')}` : ''}${matchedContributions.length ? `. Your contribution: ${matchedContributions.join(', ')}` : ''}`
           : 'No component selected'}
       </div>
     </div>
@@ -244,11 +267,8 @@ function DesktopDiagram({
           if (!from || !to) return null
 
           const isHighlighted =
-            selectedId &&
-            (connection.from === selectedId ||
-              connection.to === selectedId ||
-              connectedIds.has(connection.from) ||
-              connectedIds.has(connection.to))
+            Boolean(selectedId) &&
+            (connection.from === selectedId || connection.to === selectedId)
 
           return (
             <line
@@ -277,22 +297,29 @@ function DesktopDiagram({
         </defs>
       </svg>
 
-      {layout.map((node) => (
-        <NodeButton
-          key={node.id}
-          node={node}
-          selected={selectedId === node.id}
-          dimmed={Boolean(selectedId && !connectedIds.has(node.id))}
-          onSelect={onSelect}
-          style={{
-            left: node.x - NODE_WIDTH / 2,
-            top: node.y - NODE_HEIGHT / 2,
-            width: NODE_WIDTH,
-            height: NODE_HEIGHT,
-          }}
-          className="absolute"
-        />
-      ))}
+      {layout.map((node) => {
+        const selected = selectedId === node.id
+        const neighbor = Boolean(selectedId) && !selected && connectedIds.has(node.id)
+        const dimmed = Boolean(selectedId && !connectedIds.has(node.id))
+
+        return (
+          <NodeButton
+            key={node.id}
+            node={node}
+            selected={selected}
+            neighbor={neighbor}
+            dimmed={dimmed}
+            onSelect={onSelect}
+            style={{
+              left: node.x - NODE_WIDTH / 2,
+              top: node.y - NODE_HEIGHT / 2,
+              width: NODE_WIDTH,
+              height: NODE_HEIGHT,
+            }}
+            className="absolute"
+          />
+        )
+      })}
     </div>
   )
 }
@@ -310,22 +337,29 @@ function MobileDiagram({
 }) {
   return (
     <ol className="space-y-3">
-      {layout.map((node, index) => (
-        <li key={node.id} className="relative">
-          <NodeButton
-            node={node}
-            selected={selectedId === node.id}
-            dimmed={Boolean(selectedId && !connectedIds.has(node.id))}
-            onSelect={onSelect}
-            className="w-full"
-          />
-          {index < layout.length - 1 && (
-            <div className="flex justify-center py-1" aria-hidden="true">
-              <span className="font-mono text-xs text-muted">↓</span>
-            </div>
-          )}
-        </li>
-      ))}
+      {layout.map((node, index) => {
+        const selected = selectedId === node.id
+        const neighbor = Boolean(selectedId) && !selected && connectedIds.has(node.id)
+        const dimmed = Boolean(selectedId && !connectedIds.has(node.id))
+
+        return (
+          <li key={node.id} className="relative">
+            <NodeButton
+              node={node}
+              selected={selected}
+              neighbor={neighbor}
+              dimmed={dimmed}
+              onSelect={onSelect}
+              className="w-full"
+            />
+            {index < layout.length - 1 && (
+              <div className="flex justify-center py-1" aria-hidden="true">
+                <span className="font-mono text-xs text-muted">↓</span>
+              </div>
+            )}
+          </li>
+        )
+      })}
     </ol>
   )
 }
@@ -333,6 +367,7 @@ function MobileDiagram({
 function NodeButton({
   node,
   selected,
+  neighbor,
   dimmed,
   onSelect,
   className = '',
@@ -340,6 +375,7 @@ function NodeButton({
 }: {
   node: ArchitectureNode
   selected: boolean
+  neighbor: boolean
   dimmed: boolean
   onSelect: (nodeId: string) => void
   className?: string
@@ -350,19 +386,26 @@ function NodeButton({
       type="button"
       data-architecture-node
       aria-pressed={selected}
-      aria-label={`${node.label}, ${node.type}${selected ? ', selected' : ''}`}
+      aria-label={`${node.label}, ${node.type}${selected ? ', selected' : neighbor ? ', connected' : ''}`}
       onClick={() => onSelect(node.id)}
       style={style}
       className={`rounded-md border bg-surface px-3 py-2 text-left transition-[opacity,transform,border-color,box-shadow] duration-200 motion-reduce:transition-none architecture-node-${node.type} ${
         selected
-          ? 'border-accent ring-2 ring-accent/20 shadow-sm'
-          : 'border-border hover:border-accent/40'
+          ? 'border-accent ring-2 ring-accent/25 shadow-sm'
+          : neighbor
+            ? 'border-accent/60 ring-1 ring-accent/15'
+            : 'border-border hover:border-accent/40'
       } ${dimmed ? 'opacity-40' : 'opacity-100'} ${className}`}
     >
       <span className="block font-mono text-[10px] uppercase tracking-wide text-muted">
         {node.type}
       </span>
       <span className="mt-0.5 block text-sm font-medium leading-snug">{node.label}</span>
+      {selected && (
+        <span className="mt-1 block font-mono text-[10px] uppercase tracking-wide text-accent">
+          Selected
+        </span>
+      )}
     </button>
   )
 }

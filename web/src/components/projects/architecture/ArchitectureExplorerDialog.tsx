@@ -1,8 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useEffect, useRef } from 'react'
-import type { ArchitectureGraph } from '@/lib/sanity/types'
+import { useEffect, useRef, useState } from 'react'
+import type { ArchitectureGraph, TechGroup } from '@/lib/sanity/types'
 
 const ArchitectureExplorer = dynamic(
   () =>
@@ -22,6 +22,7 @@ type ArchitectureExplorerDialogProps = {
   graph: ArchitectureGraph
   projectTitle: string
   contributions?: string[]
+  techGroups?: TechGroup[]
   open: boolean
   onClose: () => void
 }
@@ -30,11 +31,21 @@ export function ArchitectureExplorerDialog({
   graph,
   projectTitle,
   contributions,
+  techGroups,
   open,
   onClose,
 }: ArchitectureExplorerDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
+  const [hasSelection, setHasSelection] = useState(false)
+  const [selectionEpoch, setSelectionEpoch] = useState(0)
+
+  useEffect(() => {
+    if (!open) {
+      setHasSelection(false)
+      setSelectionEpoch(0)
+    }
+  }, [open])
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -58,6 +69,11 @@ export function ArchitectureExplorerDialog({
       onClose={onClose}
       onCancel={(event) => {
         event.preventDefault()
+        if (hasSelection) {
+          setSelectionEpoch((value) => value + 1)
+          setHasSelection(false)
+          return
+        }
         onClose()
       }}
     >
@@ -79,6 +95,9 @@ export function ArchitectureExplorerDialog({
                 graph={graph}
                 projectTitle={projectTitle}
                 contributions={contributions}
+                techGroups={techGroups}
+                clearSelectionSignal={selectionEpoch}
+                onSelectionChange={setHasSelection}
               />
             ) : null}
           </div>
