@@ -1,9 +1,4 @@
-import { Hero } from '@/components/home/Hero'
-import { SelectedWork } from '@/components/home/SelectedWork'
-import { Experience } from '@/components/home/Experience'
-import { EngineeringFocus } from '@/components/home/EngineeringFocus'
-import { About } from '@/components/home/About'
-import { Contact } from '@/components/home/Contact'
+import { HomeView } from '@/components/home/HomeView'
 import { client } from '@/lib/sanity/client'
 import { getSiteUrl } from '@/lib/utils'
 import {
@@ -16,7 +11,13 @@ import {
 
 export const revalidate = 60
 
-export default async function HomePage() {
+type HomePageProps = {
+  searchParams: Promise<{ mode?: string }>
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { mode: initialUrlMode } = await searchParams
+
   const [settings, projects, experience, skillGroups, about] = await Promise.all([
     client.fetch(siteSettingsQuery),
     client.fetch(featuredProjectsQuery),
@@ -42,12 +43,14 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero settings={settings} />
-      <SelectedWork projects={projects} />
-      <Experience items={experience} />
-      <EngineeringFocus groups={skillGroups} />
-      <About about={about} />
-      <Contact settings={settings} />
+      <HomeView
+        settings={settings}
+        projects={projects}
+        experience={experience}
+        skillGroups={skillGroups}
+        about={about}
+        initialUrlMode={initialUrlMode ?? null}
+      />
     </>
   )
 }

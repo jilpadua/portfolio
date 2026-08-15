@@ -27,7 +27,9 @@ export const featuredProjectsQuery = groq`
       category,
       technologies
     },
-    heroImage
+    heroImage,
+    featuredForRecruiters,
+    focusAreas
   }
 `
 
@@ -48,12 +50,38 @@ export const projectBySlugQuery = groq`
     problem,
     audience,
     role,
+    duration,
     contribution,
+    contributionGroups[]{
+      category,
+      items
+    },
     techGroups[]{
       category,
       technologies
     },
     architecture,
+    architectureGraph{
+      description,
+      nodes[]{
+        id,
+        label,
+        type,
+        purpose,
+        technology,
+        responsibilities,
+        relatedApis
+      },
+      connections[]{
+        from,
+        to
+      }
+    },
+    implementation[]{
+      title,
+      summary,
+      steps
+    },
     technicalChallenges[]{
       title,
       problem,
@@ -65,6 +93,7 @@ export const projectBySlugQuery = groq`
       title,
       rationale
     },
+    outcomes,
     heroImage,
     gallery,
     githubUrl,
