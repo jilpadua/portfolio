@@ -1,9 +1,9 @@
 import type { ArchitectureGraph, ArchitectureNode } from '@/lib/sanity/types'
 import { getConnectedNodeIds, getOrderedNodes } from '@/lib/architecture-graph'
 
-export const NODE_WIDTH = 176
-export const NODE_HEIGHT = 52
-export const NODE_GAP_Y = 44
+export const NODE_WIDTH = 208
+export const NODE_HEIGHT = 58
+export const NODE_GAP_Y = 28
 export const NODE_GAP_X = 72
 
 export type LayoutNode = ArchitectureNode & {
@@ -31,7 +31,7 @@ export function getCanvasSize(layout: LayoutNode[]) {
 
   const maxY = Math.max(...layout.map((node) => node.y))
   return {
-    width: NODE_WIDTH + 32,
+    width: NODE_WIDTH + 48,
     height: maxY + NODE_HEIGHT / 2 + 24,
   }
 }
