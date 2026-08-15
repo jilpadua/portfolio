@@ -21,6 +21,7 @@ const ArchitectureExplorer = dynamic(
 type ArchitectureExplorerDialogProps = {
   graph: ArchitectureGraph
   projectTitle: string
+  contributions?: string[]
   open: boolean
   onClose: () => void
 }
@@ -28,6 +29,7 @@ type ArchitectureExplorerDialogProps = {
 export function ArchitectureExplorerDialog({
   graph,
   projectTitle,
+  contributions,
   open,
   onClose,
 }: ArchitectureExplorerDialogProps) {
@@ -72,7 +74,13 @@ export function ArchitectureExplorerDialog({
             </button>
           </div>
           <div className="overflow-y-auto px-4 py-4 md:px-6 md:py-5">
-            {open ? <ArchitectureExplorer graph={graph} projectTitle={projectTitle} /> : null}
+            {open ? (
+              <ArchitectureExplorer
+                graph={graph}
+                projectTitle={projectTitle}
+                contributions={contributions}
+              />
+            ) : null}
           </div>
         </div>
       </div>

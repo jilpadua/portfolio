@@ -4,7 +4,6 @@ import { getSiteUrl } from '@/lib/utils'
 import {
   siteSettingsQuery,
   featuredProjectsQuery,
-  recruiterProjectsQuery,
   experienceQuery,
   skillGroupsQuery,
   aboutQuery,
@@ -12,16 +11,20 @@ import {
 
 export const revalidate = 60
 
-export default async function HomePage() {
-  const [settings, projects, recruiterProjects, experience, skillGroups, about] =
-    await Promise.all([
-      client.fetch(siteSettingsQuery),
-      client.fetch(featuredProjectsQuery),
-      client.fetch(recruiterProjectsQuery),
-      client.fetch(experienceQuery),
-      client.fetch(skillGroupsQuery),
-      client.fetch(aboutQuery),
-    ])
+type HomePageProps = {
+  searchParams: Promise<{ mode?: string }>
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { mode: initialUrlMode } = await searchParams
+
+  const [settings, projects, experience, skillGroups, about] = await Promise.all([
+    client.fetch(siteSettingsQuery),
+    client.fetch(featuredProjectsQuery),
+    client.fetch(experienceQuery),
+    client.fetch(skillGroupsQuery),
+    client.fetch(aboutQuery),
+  ])
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -43,10 +46,10 @@ export default async function HomePage() {
       <HomeView
         settings={settings}
         projects={projects}
-        recruiterProjects={recruiterProjects}
         experience={experience}
         skillGroups={skillGroups}
         about={about}
+        initialUrlMode={initialUrlMode ?? null}
       />
     </>
   )

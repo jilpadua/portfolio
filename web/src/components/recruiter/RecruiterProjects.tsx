@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { FOCUS_AREA_LABELS } from '@/lib/case-study'
 import { flattenTechnologies } from '@/lib/utils'
-import type { FocusArea, RecruiterProject } from '@/lib/sanity/types'
+import type { FocusArea, ProjectCard } from '@/lib/sanity/types'
 
 const FILTER_OPTIONS: Array<{ id: 'all' | FocusArea; label: string }> = [
   { id: 'all', label: 'All' },
@@ -16,7 +16,7 @@ const FILTER_OPTIONS: Array<{ id: 'all' | FocusArea; label: string }> = [
 ]
 
 type RecruiterProjectsProps = {
-  projects: RecruiterProject[]
+  projects: ProjectCard[]
 }
 
 export function RecruiterProjects({ projects }: RecruiterProjectsProps) {
@@ -78,7 +78,7 @@ export function RecruiterProjects({ projects }: RecruiterProjectsProps) {
   )
 }
 
-function RecruiterProjectCard({ project }: { project: RecruiterProject }) {
+function RecruiterProjectCard({ project }: { project: ProjectCard }) {
   const techLine = flattenTechnologies(project.techGroups)
   const focusLine = project.focusAreas
     ?.map((area) => FOCUS_AREA_LABELS[area] ?? area)

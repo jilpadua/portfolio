@@ -33,22 +33,6 @@ export const featuredProjectsQuery = groq`
   }
 `
 
-export const recruiterProjectsQuery = groq`
-  *[_type == "project" && featuredForRecruiters == true] | order(order asc, _createdAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    tagline,
-    shortDescription,
-    techGroups[]{
-      category,
-      technologies
-    },
-    focusAreas,
-    featuredForRecruiters
-  }
-`
-
 export const allProjectSlugsQuery = groq`
   *[_type == "project" && defined(slug.current)]{
     "slug": slug.current

@@ -1,9 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { matchContributionsToNode } from '@/lib/case-study'
 import type { ArchitectureGraph, ArchitectureNode } from '@/lib/sanity/types'
 import { ArchitectureLegend } from './ArchitectureLegend'
 import { ArchitectureNodeDetail } from './ArchitectureNodeDetail'
+import { ArchitectureTextFlow } from './ArchitectureTextFlow'
 import {
   computeVerticalLayout,
   getCanvasSize,
@@ -17,13 +19,18 @@ import {
 type ArchitectureExplorerProps = {
   graph: ArchitectureGraph
   projectTitle: string
+  contributions?: string[]
 }
 
 const MIN_SCALE = 0.75
 const MAX_SCALE = 1.5
 const SCALE_STEP = 0.15
 
-export function ArchitectureExplorer({ graph, projectTitle }: ArchitectureExplorerProps) {
+export function ArchitectureExplorer({
+  graph,
+  projectTitle,
+  contributions,
+}: ArchitectureExplorerProps) {
   const nodes = graph.nodes ?? []
   const connections = graph.connections ?? []
   const layout = useMemo(() => computeVerticalLayout(graph), [graph])
@@ -49,6 +56,11 @@ export function ArchitectureExplorer({ graph, projectTitle }: ArchitectureExplor
       .map((id) => nodes.find((node) => node.id === id)?.label)
       .filter((label): label is string => Boolean(label))
   }, [connectedIds, nodes, selectedId])
+
+  const matchedContributions = useMemo(() => {
+    if (!selectedNode) return []
+    return matchContributionsToNode(selectedNode, contributions)
+  }, [contributions, selectedNode])
 
   const selectNode = useCallback((nodeId: string) => {
     setSelectedId((current) => (current === nodeId ? null : nodeId))
@@ -145,6 +157,8 @@ export function ArchitectureExplorer({ graph, projectTitle }: ArchitectureExplor
         </div>
       </div>
 
+      <ArchitectureTextFlow graph={graph} className="rounded-md border border-border bg-surface/60 p-4" />
+
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div
           ref={viewportRef}
@@ -153,6 +167,7 @@ export function ArchitectureExplorer({ graph, projectTitle }: ArchitectureExplor
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
+          aria-label="Interactive architecture diagram"
         >
           <div
             className="hidden md:block absolute inset-0 origin-center transition-transform duration-200 motion-reduce:transition-none"
@@ -178,18 +193,20 @@ export function ArchitectureExplorer({ graph, projectTitle }: ArchitectureExplor
           </div>
         </div>
 
-        <ArchitectureNodeDetail node={selectedNode} relatedLabels={relatedLabels} />
+        <ArchitectureNodeDetail
+          node={selectedNode}
+          relatedLabels={relatedLabels}
+          matchedContributions={matchedContributions}
+        />
       </div>
 
       <ArchitectureLegend />
 
       <div className="sr-only" aria-live="polite">
         {selectedNode
-          ? `Selected ${selectedNode.label}. ${relatedLabels.length ? `Related: ${relatedLabels.join(', ')}` : ''}`
-          : 'No node selected'}
+          ? `Selected ${selectedNode.label}. ${relatedLabels.length ? `Connected systems: ${relatedLabels.join(', ')}` : ''}${matchedContributions.length ? `. Your involvement: ${matchedContributions.join(', ')}` : ''}`
+          : 'No component selected'}
       </div>
-
-      <AccessibleFallback graph={graph} />
     </div>
   )
 }
@@ -333,7 +350,7 @@ function NodeButton({
       type="button"
       data-architecture-node
       aria-pressed={selected}
-      aria-label={`${node.label}, ${node.type}`}
+      aria-label={`${node.label}, ${node.type}${selected ? ', selected' : ''}`}
       onClick={() => onSelect(node.id)}
       style={style}
       className={`rounded-md border bg-surface px-3 py-2 text-left transition-[opacity,transform,border-color,box-shadow] duration-200 motion-reduce:transition-none architecture-node-${node.type} ${
@@ -359,44 +376,5 @@ function ControlButton({ label, onClick }: { label: string; onClick: () => void 
     >
       {label}
     </button>
-  )
-}
-
-function AccessibleFallback({ graph }: { graph: ArchitectureGraph }) {
-  const nodes = graph.nodes ?? []
-  const connections = graph.connections ?? []
-
-  return (
-    <details className="rounded-md border border-border bg-surface/60 p-4">
-      <summary className="cursor-pointer text-sm font-medium">Accessible architecture list</summary>
-      <div className="mt-3 space-y-3 text-sm text-muted">
-        <div>
-          <p className="mono-label mb-2">Nodes</p>
-          <ul className="space-y-1">
-            {nodes.map((node) => (
-              <li key={node.id}>
-                {node.label} ({node.type})
-              </li>
-            ))}
-          </ul>
-        </div>
-        {connections.length > 0 && (
-          <div>
-            <p className="mono-label mb-2">Connections</p>
-            <ul className="space-y-1">
-              {connections.map((connection) => {
-                const from = nodes.find((node) => node.id === connection.from)?.label
-                const to = nodes.find((node) => node.id === connection.to)?.label
-                return (
-                  <li key={`${connection.from}-${connection.to}`}>
-                    {from} → {to}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        )}
-      </div>
-    </details>
   )
 }

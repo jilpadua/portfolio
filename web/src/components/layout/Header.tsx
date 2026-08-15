@@ -26,7 +26,7 @@ type HeaderProps = {
 export function Header({ settings }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { isRecruiterMode, toggleRecruiterMode } = useRecruiterMode()
+  const { isRecruiterMode, isReady, toggleRecruiterMode } = useRecruiterMode()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -35,7 +35,13 @@ export function Header({ settings }: HeaderProps) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navItems = isRecruiterMode ? RECRUITER_NAV_ITEMS : NAV_ITEMS
+  const navItems = isReady && isRecruiterMode ? RECRUITER_NAV_ITEMS : NAV_ITEMS
+  const recruiterToggleLabel = !isReady
+    ? 'Recruiter Mode'
+    : isRecruiterMode
+      ? 'Exit Recruiter Mode'
+      : 'Recruiter Mode'
+  const mobileToggleLabel = !isReady ? 'Recruiter' : isRecruiterMode ? 'Exit' : 'Recruiter'
 
   return (
     <header
@@ -62,14 +68,14 @@ export function Header({ settings }: HeaderProps) {
           <button
             type="button"
             onClick={toggleRecruiterMode}
-            aria-pressed={isRecruiterMode}
+            aria-pressed={isReady ? isRecruiterMode : false}
             className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
-              isRecruiterMode
+              isReady && isRecruiterMode
                 ? 'border-accent bg-accent text-white'
                 : 'border-border bg-surface text-muted hover:text-foreground'
             }`}
           >
-            {isRecruiterMode ? 'Exit Recruiter Mode' : 'Recruiter Mode'}
+            {recruiterToggleLabel}
           </button>
           {settings?.github && (
             <a
@@ -97,14 +103,14 @@ export function Header({ settings }: HeaderProps) {
           <button
             type="button"
             onClick={toggleRecruiterMode}
-            aria-pressed={isRecruiterMode}
+            aria-pressed={isReady ? isRecruiterMode : false}
             className={`rounded-md border px-2.5 py-2 text-xs transition-colors ${
-              isRecruiterMode
+              isReady && isRecruiterMode
                 ? 'border-accent bg-accent text-white'
                 : 'border-border bg-surface text-muted'
             }`}
           >
-            {isRecruiterMode ? 'Exit' : 'Recruiter'}
+            {mobileToggleLabel}
           </button>
           <button
             type="button"

@@ -31,15 +31,15 @@ export function CaseStudyPageContent({
       <CaseStudyNav sections={sections} />
       <ProjectOverview project={project} />
       <ProjectProblem project={project} />
+      <ProjectContribution project={project} />
+      <ProjectStack project={project} />
       <ArchitectureSection project={project} />
       <ProjectImplementation
         implementation={project.implementation}
         decisions={project.technicalDecisions}
       />
       <TechnicalChallenges challenges={project.technicalChallenges} />
-      <ProjectContribution project={project} />
       <ProjectOutcome project={project} />
-      <ProjectStack project={project} />
       <ProjectNavigation currentSlug={currentSlug} projects={navProjects} />
     </>
   )

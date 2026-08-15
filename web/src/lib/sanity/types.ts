@@ -143,18 +143,6 @@ export type ProjectCard = Pick<
   | 'focusAreas'
 >
 
-export type RecruiterProject = Pick<
-  Project,
-  | '_id'
-  | 'title'
-  | 'slug'
-  | 'tagline'
-  | 'shortDescription'
-  | 'techGroups'
-  | 'focusAreas'
-  | 'featuredForRecruiters'
->
-
 export type CaseStudySectionId =
   | 'overview'
   | 'problem'

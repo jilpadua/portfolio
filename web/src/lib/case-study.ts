@@ -7,6 +7,7 @@ import type {
   TechnicalChallenge,
   TechnicalDecision,
 } from '@/lib/sanity/types'
+import { formatArchitectureTextFlow } from '@/lib/architecture-graph'
 
 export const CASE_STUDY_SECTION_LABELS: Record<CaseStudySectionId, string> = {
   overview: 'Overview',
@@ -97,11 +98,6 @@ export function getCaseStudySections(project: Project): CaseStudySectionId[] {
 
   if (project.overview || project.audience) sections.push('overview')
   if (project.problem) sections.push('problem')
-  if (graph?.nodes?.length) sections.push('architecture')
-  if (hasImplementationContent(project.implementation, project.technicalDecisions)) {
-    sections.push('implementation')
-  }
-  if (hasChallengeContent(project.technicalChallenges)) sections.push('challenges')
   if (
     project.role ||
     project.contribution?.length ||
@@ -109,11 +105,68 @@ export function getCaseStudySections(project: Project): CaseStudySectionId[] {
   ) {
     sections.push('contribution')
   }
-  if (project.outcomes?.length) sections.push('outcome')
   if (project.techGroups?.length) sections.push('technologies')
+  if (graph?.nodes?.length) sections.push('architecture')
+  if (hasImplementationContent(project.implementation, project.technicalDecisions)) {
+    sections.push('implementation')
+  }
+  if (hasChallengeContent(project.technicalChallenges)) sections.push('challenges')
+  if (project.outcomes?.length) sections.push('outcome')
 
   return sections
 }
+
+function tokenize(value: string): string[] {
+  return value
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((token) => token.length >= 4)
+}
+
+export function matchContributionsToNode(
+  node: ArchitectureNode,
+  contributions?: string[],
+): string[] {
+  if (!contributions?.length) return []
+
+  const labelLower = node.label.toLowerCase()
+  const nodeTokens = tokenize(node.label)
+  const matches = new Set<string>()
+
+  for (const contribution of contributions) {
+    const contributionLower = contribution.toLowerCase()
+    const contributionTokens = tokenize(contribution)
+
+    const labelInContribution = nodeTokens.some((token) => contributionLower.includes(token))
+    const contributionInLabel = contributionTokens.some((token) => labelLower.includes(token))
+
+    const keywordPairs: Array<[string[], string[]]> = [
+      [['booking'], ['booking', 'reservation']],
+      [['hardware'], ['hardware', 'bollard', 'device']],
+      [['graphql', 'gateway'], ['graphql']],
+      [['parking'], ['parking', 'slot']],
+      [['flutter', 'app'], ['flutter', 'mobile']],
+    ]
+
+    let keywordMatch = false
+    for (const [labelKeys, contributionKeys] of keywordPairs) {
+      const labelHit = labelKeys.some((key) => labelLower.includes(key))
+      const contributionHit = contributionKeys.some((key) => contributionLower.includes(key))
+      if (labelHit && contributionHit) {
+        keywordMatch = true
+        break
+      }
+    }
+
+    if (keywordMatch || labelInContribution || contributionInLabel) {
+      matches.add(contribution)
+    }
+  }
+
+  return Array.from(matches)
+}
+
+export { formatArchitectureTextFlow }
 
 export const FOCUS_AREA_LABELS: Record<string, string> = {
   backend: 'Backend',
