@@ -21,7 +21,7 @@ export function ArchitectureTextFlow({ graph, className = '' }: ArchitectureText
                 ↓
               </span>
             )}
-            <span className="block rounded-md border border-border bg-surface px-3 py-2 text-foreground">
+            <span className="block rounded-md border border-border bg-surface px-3 py-2 text-center break-words text-foreground">
               {step}
             </span>
           </li>
