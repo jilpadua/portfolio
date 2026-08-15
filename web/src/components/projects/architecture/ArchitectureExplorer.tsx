@@ -402,15 +402,19 @@ function NodeButton({
             : 'border-border hover:border-accent/40'
       } ${dimmed ? 'opacity-40' : 'opacity-100'} ${className}`}
     >
-      <span className="block font-mono text-[10px] uppercase tracking-wide text-muted">
-        {node.type}
-      </span>
-      <span className="mt-0.5 block text-sm font-medium leading-snug">{node.label}</span>
-      {selected && (
-        <span className="mt-1 block font-mono text-[10px] uppercase tracking-wide text-accent">
-          Selected
+      <span className="flex items-start justify-between gap-2">
+        <span className="min-w-0 font-mono text-[10px] uppercase tracking-wide text-muted">
+          {node.type}
         </span>
-      )}
+        {selected && (
+          <span className="shrink-0 rounded border border-accent/30 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-accent">
+            Selected
+          </span>
+        )}
+      </span>
+      <span className="mt-0.5 block min-w-0 text-sm font-medium leading-snug break-words">
+        {node.label}
+      </span>
     </button>
   )
 }
