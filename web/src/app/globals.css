@@ -128,3 +128,31 @@ body {
   clip: auto;
   white-space: normal;
 }
+
+.case-study-section {
+  scroll-margin-top: 8rem;
+}
+
+.architecture-node-client {
+  background: rgba(15, 92, 86, 0.06);
+}
+
+.architecture-node-gateway {
+  background: rgba(17, 17, 17, 0.04);
+}
+
+.architecture-node-service {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.architecture-node-database {
+  background: rgba(15, 92, 86, 0.1);
+}
+
+.architecture-node-external {
+  background: rgba(92, 92, 92, 0.08);
+}
+
+dialog::backdrop {
+  background: rgba(17, 17, 17, 0.45);
+}

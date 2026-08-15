@@ -1,13 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { ProjectHero } from '@/components/projects/ProjectHero'
-import { ProjectOverview } from '@/components/projects/ProjectOverview'
-import { ProjectContribution } from '@/components/projects/ProjectContribution'
-import { ProjectStack } from '@/components/projects/ProjectStack'
-import { ArchitectureDiagram } from '@/components/projects/ArchitectureDiagram'
-import { TechnicalChallenges } from '@/components/projects/TechnicalChallenges'
-import { TechnicalDecisions } from '@/components/projects/TechnicalDecisions'
-import { ProjectNavigation } from '@/components/projects/ProjectNavigation'
+import { CaseStudyPageContent } from '@/components/projects/CaseStudyPageContent'
 import { client } from '@/lib/sanity/client'
 import { getSiteUrl } from '@/lib/utils'
 import {
@@ -72,15 +65,10 @@ export default async function ProjectPage({ params }: PageProps) {
   if (!project) notFound()
 
   return (
-    <>
-      <ProjectHero project={project} />
-      <ProjectOverview project={project} />
-      <ProjectContribution project={project} />
-      <ProjectStack project={project} />
-      <ArchitectureDiagram steps={project.architecture} />
-      <TechnicalChallenges challenges={project.technicalChallenges} />
-      <TechnicalDecisions decisions={project.technicalDecisions} />
-      <ProjectNavigation currentSlug={slug} projects={navProjects} />
-    </>
+    <CaseStudyPageContent
+      project={project}
+      navProjects={navProjects}
+      currentSlug={slug}
+    />
   )
 }
