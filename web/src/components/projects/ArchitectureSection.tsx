@@ -53,6 +53,7 @@ export function ArchitectureSection({ project }: ArchitectureSectionProps) {
           graph={project.architectureGraph}
           projectTitle={project.title}
           contributions={project.contribution}
+          techGroups={project.techGroups}
           open={explorerOpen}
           onClose={() => setExplorerOpen(false)}
         />

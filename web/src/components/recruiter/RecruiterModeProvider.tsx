@@ -18,6 +18,11 @@ type RecruiterModeContextValue = {
   setRecruiterMode: (value: boolean) => void
 }
 
+type RecruiterModeInternalValue = RecruiterModeContextValue & {
+  applyResolvedMode: (value: boolean) => void
+  markReady: () => void
+}
+
 const defaultValue: RecruiterModeContextValue = {
   isRecruiterMode: false,
   isReady: false,
@@ -25,7 +30,11 @@ const defaultValue: RecruiterModeContextValue = {
   setRecruiterMode: () => {},
 }
 
-const RecruiterModeContext = createContext<RecruiterModeContextValue>(defaultValue)
+const RecruiterModeContext = createContext<RecruiterModeInternalValue>({
+  ...defaultValue,
+  applyResolvedMode: () => {},
+  markReady: () => {},
+})
 
 const STORAGE_KEY = 'portfolio-recruiter-mode'
 
@@ -34,7 +43,7 @@ function readStoragePreference(): boolean {
   return sessionStorage.getItem(STORAGE_KEY) === 'true'
 }
 
-function resolveRecruiterMode(urlMode: string | null): boolean {
+export function resolveRecruiterMode(urlMode: string | null): boolean {
   if (urlMode === 'recruiter') return true
   if (urlMode !== null) return false
   return readStoragePreference()
@@ -42,53 +51,50 @@ function resolveRecruiterMode(urlMode: string | null): boolean {
 
 type RecruiterModeProviderProps = {
   children: ReactNode
-  initialUrlMode?: string | null
 }
 
-export function RecruiterModeProvider({
-  children,
-  initialUrlMode = null,
-}: RecruiterModeProviderProps) {
+export function RecruiterModeProvider({ children }: RecruiterModeProviderProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const urlMode = searchParams.get('mode') ?? initialUrlMode ?? null
+  const [isRecruiterMode, setIsRecruiterModeState] = useState(false)
+  const [isReady, setIsReady] = useState(false)
 
-  const [isRecruiterMode, setIsRecruiterModeState] = useState(() =>
-    urlMode === 'recruiter' ? true : false,
-  )
-  const [isReady, setIsReady] = useState(() => urlMode !== null)
+  const applyResolvedMode = useCallback((value: boolean) => {
+    setIsRecruiterModeState(value)
+  }, [])
 
-  useEffect(() => {
-    const currentUrlMode = searchParams.get('mode') ?? initialUrlMode ?? null
-    const resolved = resolveRecruiterMode(currentUrlMode)
-    setIsRecruiterModeState(resolved)
+  const markReady = useCallback(() => {
     setIsReady(true)
-  }, [initialUrlMode, searchParams])
-
-  const syncUrl = useCallback(
-    (enabled: boolean) => {
-      const params = new URLSearchParams(searchParams.toString())
-      if (enabled) {
-        params.set('mode', 'recruiter')
-      } else {
-        params.delete('mode')
-      }
-
-      const query = params.toString()
-      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
-    },
-    [pathname, router, searchParams],
-  )
+  }, [])
 
   const setRecruiterMode = useCallback(
     (value: boolean) => {
       setIsRecruiterModeState(value)
       sessionStorage.setItem(STORAGE_KEY, value ? 'true' : 'false')
       setIsReady(true)
-      syncUrl(value)
+
+      if (value) {
+        if (pathname !== '/') {
+          router.push('/?mode=recruiter')
+          return
+        }
+        router.replace('/?mode=recruiter', { scroll: false })
+        return
+      }
+
+      if (pathname === '/') {
+        router.replace('/', { scroll: false })
+        return
+      }
+
+      const params = new URLSearchParams(
+        typeof window !== 'undefined' ? window.location.search : '',
+      )
+      params.delete('mode')
+      const query = params.toString()
+      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
     },
-    [syncUrl],
+    [pathname, router],
   )
 
   const toggleRecruiterMode = useCallback(() => {
@@ -101,8 +107,17 @@ export function RecruiterModeProvider({
       isReady,
       toggleRecruiterMode,
       setRecruiterMode,
+      applyResolvedMode,
+      markReady,
     }),
-    [isRecruiterMode, isReady, setRecruiterMode, toggleRecruiterMode],
+    [
+      applyResolvedMode,
+      isReady,
+      isRecruiterMode,
+      markReady,
+      setRecruiterMode,
+      toggleRecruiterMode,
+    ],
   )
 
   return (
@@ -110,6 +125,22 @@ export function RecruiterModeProvider({
   )
 }
 
-export function useRecruiterMode() {
-  return useContext(RecruiterModeContext)
+/** Syncs URL + sessionStorage into provider state. Must sit inside Suspense. */
+export function RecruiterModeUrlSync() {
+  const searchParams = useSearchParams()
+  const { applyResolvedMode, markReady } = useContext(RecruiterModeContext)
+
+  useEffect(() => {
+    const urlMode = searchParams.get('mode')
+    applyResolvedMode(resolveRecruiterMode(urlMode))
+    markReady()
+  }, [applyResolvedMode, markReady, searchParams])
+
+  return null
+}
+
+export function useRecruiterMode(): RecruiterModeContextValue {
+  const { isRecruiterMode, isReady, toggleRecruiterMode, setRecruiterMode } =
+    useContext(RecruiterModeContext)
+  return { isRecruiterMode, isReady, toggleRecruiterMode, setRecruiterMode }
 }

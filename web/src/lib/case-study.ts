@@ -116,13 +116,12 @@ export function getCaseStudySections(project: Project): CaseStudySectionId[] {
   return sections
 }
 
-function tokenize(value: string): string[] {
-  return value
-    .toLowerCase()
-    .split(/[^a-z0-9]+/)
-    .filter((token) => token.length >= 4)
-}
-
+/**
+ * Conservative contribution ↔ node matching using existing CMS bullets only.
+ * "Backend services" maps only to Booking Service (primary reservation surface),
+ * not every service node. Unmatched bullets (e.g. Database integration with no
+ * database node) are omitted rather than inventing architecture.
+ */
 export function matchContributionsToNode(
   node: ArchitectureNode,
   contributions?: string[],
@@ -130,40 +129,104 @@ export function matchContributionsToNode(
   if (!contributions?.length) return []
 
   const labelLower = node.label.toLowerCase()
-  const nodeTokens = tokenize(node.label)
   const matches = new Set<string>()
 
   for (const contribution of contributions) {
     const contributionLower = contribution.toLowerCase()
-    const contributionTokens = tokenize(contribution)
 
-    const labelInContribution = nodeTokens.some((token) => contributionLower.includes(token))
-    const contributionInLabel = contributionTokens.some((token) => labelLower.includes(token))
-
-    const keywordPairs: Array<[string[], string[]]> = [
-      [['booking'], ['booking', 'reservation']],
-      [['hardware'], ['hardware', 'bollard', 'device']],
-      [['graphql', 'gateway'], ['graphql']],
-      [['parking'], ['parking', 'slot']],
-      [['flutter', 'app'], ['flutter', 'mobile']],
-    ]
-
-    let keywordMatch = false
-    for (const [labelKeys, contributionKeys] of keywordPairs) {
-      const labelHit = labelKeys.some((key) => labelLower.includes(key))
-      const contributionHit = contributionKeys.some((key) => contributionLower.includes(key))
-      if (labelHit && contributionHit) {
-        keywordMatch = true
-        break
-      }
+    if (
+      labelLower.includes('booking') &&
+      (contributionLower.includes('reservation') || contributionLower.includes('booking'))
+    ) {
+      matches.add(contribution)
+      continue
     }
 
-    if (keywordMatch || labelInContribution || contributionInLabel) {
+    if (
+      labelLower.includes('hardware') &&
+      (contributionLower.includes('hardware') ||
+        contributionLower.includes('bollard') ||
+        contributionLower.includes('availability validation'))
+    ) {
+      matches.add(contribution)
+      continue
+    }
+
+    if (
+      (labelLower.includes('graphql') || labelLower.includes('gateway')) &&
+      contributionLower.includes('graphql')
+    ) {
+      matches.add(contribution)
+      continue
+    }
+
+    if (
+      (labelLower.includes('flutter') || labelLower.includes('client')) &&
+      (contributionLower.includes('flutter') || contributionLower.includes('mobile'))
+    ) {
+      matches.add(contribution)
+      continue
+    }
+
+    if (
+      labelLower.includes('parking') &&
+      labelLower.includes('device') === false &&
+      (contributionLower.includes('parking') || contributionLower.includes('slot'))
+    ) {
+      matches.add(contribution)
+      continue
+    }
+
+    // Generic "Backend services" → Booking Service only (not Hardware Service)
+    if (
+      labelLower.includes('booking') &&
+      contributionLower.includes('backend') &&
+      contributionLower.includes('service')
+    ) {
       matches.add(contribution)
     }
   }
 
   return Array.from(matches)
+}
+
+/** Derive a display technology from project techGroups when the node has none. */
+export function deriveNodeTechnology(
+  node: ArchitectureNode,
+  techGroups?: { category: string; technologies?: string[] }[],
+): string | null {
+  if (node.technology) return node.technology
+  if (!techGroups?.length) return null
+
+  const labelLower = node.label.toLowerCase()
+  const byCategory = (category: string) =>
+    techGroups.find((group) => group.category === category)?.technologies?.filter(Boolean) ?? []
+
+  if (labelLower.includes('flutter')) {
+    const frontend = byCategory('frontend')
+    const flutter = frontend.find((tech) => tech.toLowerCase().includes('flutter'))
+    if (flutter) return flutter
+    if (frontend.length) return frontend.join(' · ')
+  }
+
+  if (labelLower.includes('graphql') || (node.type === 'gateway' && labelLower.includes('gateway'))) {
+    const api = byCategory('api')
+    const graphql = api.find((tech) => tech.toLowerCase().includes('graphql'))
+    if (graphql) return graphql
+    if (api.length) return api.join(' · ')
+  }
+
+  if (node.type === 'service') {
+    const backend = byCategory('backend')
+    if (backend.length) return backend.join(' · ')
+  }
+
+  if (node.type === 'database') {
+    const database = byCategory('database')
+    if (database.length) return database.join(' · ')
+  }
+
+  return null
 }
 
 export { formatArchitectureTextFlow }

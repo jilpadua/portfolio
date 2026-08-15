@@ -5,12 +5,14 @@ type ArchitectureNodeDetailProps = {
   node: ArchitectureNode | null
   relatedLabels?: string[]
   matchedContributions?: string[]
+  derivedTechnology?: string | null
 }
 
 export function ArchitectureNodeDetail({
   node,
   relatedLabels,
   matchedContributions,
+  derivedTechnology,
 }: ArchitectureNodeDetailProps) {
   if (!node) {
     return (
@@ -23,15 +25,17 @@ export function ArchitectureNodeDetail({
     )
   }
 
+  const technology = node.technology || derivedTechnology || null
+
   return (
     <article className="rounded-md border border-border bg-surface p-5">
-      <p className="mono-label">{ARCHITECTURE_NODE_TYPE_LABELS[node.type]}</p>
-      <h3 className="mt-2 text-lg font-semibold tracking-tight">{node.label}</h3>
+      <h3 className="text-lg font-semibold tracking-tight">{node.label}</h3>
+      <p className="mt-1 mono-label">{ARCHITECTURE_NODE_TYPE_LABELS[node.type]}</p>
 
-      {node.technology && (
+      {technology && (
         <div className="mt-4">
           <p className="mono-label mb-2">Technology</p>
-          <p className="font-mono text-sm text-muted">{node.technology}</p>
+          <p className="font-mono text-sm text-muted">{technology}</p>
         </div>
       )}
 
@@ -47,6 +51,22 @@ export function ArchitectureNodeDetail({
           <p className="mono-label mb-2">Responsibilities</p>
           <ul className="space-y-1.5 text-sm text-muted">
             {node.responsibilities.map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="text-accent" aria-hidden="true">
+                  •
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {matchedContributions?.length ? (
+        <div className="mt-4">
+          <p className="mono-label mb-2">Your contribution</p>
+          <ul className="space-y-1.5 text-sm text-muted">
+            {matchedContributions.map((item) => (
               <li key={item} className="flex gap-2">
                 <span className="text-accent" aria-hidden="true">
                   •
@@ -80,22 +100,6 @@ export function ArchitectureNodeDetail({
           <ul className="space-y-1.5 font-mono text-xs text-muted">
             {node.relatedApis.map((item) => (
               <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-
-      {matchedContributions?.length ? (
-        <div className="mt-4">
-          <p className="mono-label mb-2">Your involvement</p>
-          <ul className="space-y-1.5 text-sm text-muted">
-            {matchedContributions.map((item) => (
-              <li key={item} className="flex gap-2">
-                <span className="text-accent" aria-hidden="true">
-                  •
-                </span>
-                <span>{item}</span>
-              </li>
             ))}
           </ul>
         </div>
