@@ -17,10 +17,37 @@ export function ArchitectureNodeDetail({
   if (!node) {
     return (
       <div className="rounded-md border border-dashed border-border bg-background/60 p-5">
-        <p className="mono-label">Selected component</p>
-        <p className="mt-2 text-sm text-muted">
-          Select a component to inspect its role in the system.
+        <p className="mono-label">Explore the architecture</p>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          Select a component to inspect how it fits into the system.
         </p>
+        <p className="mt-4 mono-label mb-2">You can explore</p>
+        <ul className="space-y-1.5 text-sm text-muted">
+          <li className="flex gap-2">
+            <span className="text-accent" aria-hidden="true">
+              •
+            </span>
+            <span>What the component is</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-accent" aria-hidden="true">
+              •
+            </span>
+            <span>Its technology</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-accent" aria-hidden="true">
+              •
+            </span>
+            <span>Connected systems</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-accent" aria-hidden="true">
+              •
+            </span>
+            <span>Relevant contribution</span>
+          </li>
+        </ul>
       </div>
     )
   }
