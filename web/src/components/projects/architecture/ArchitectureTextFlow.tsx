@@ -13,7 +13,7 @@ export function ArchitectureTextFlow({ graph, className = '' }: ArchitectureText
   return (
     <div className={className}>
       <p className="mono-label mb-3">Architecture flow</p>
-      <ol className="space-y-1 font-mono text-sm leading-relaxed text-muted">
+      <ol className="mx-auto w-full space-y-1 font-mono text-sm leading-relaxed text-muted sm:w-[82%] md:w-[68%]">
         {steps.map((step, index) => (
           <li key={`${step}-${index}`}>
             {index > 0 && (
