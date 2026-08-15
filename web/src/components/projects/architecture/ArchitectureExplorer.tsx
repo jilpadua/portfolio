@@ -24,21 +24,17 @@ type ArchitectureExplorerProps = {
   projectTitle: string
   contributions?: string[]
   techGroups?: TechGroup[]
-  clearSelectionSignal?: number
-  onSelectionChange?: (hasSelection: boolean) => void
 }
 
-const MIN_SCALE = 0.75
-const MAX_SCALE = 1.5
-const SCALE_STEP = 0.15
+const MIN_SCALE = 0.7
+const MAX_SCALE = 1.6
+const SCALE_STEP = 0.12
 
 export function ArchitectureExplorer({
   graph,
   projectTitle,
   contributions,
   techGroups,
-  clearSelectionSignal = 0,
-  onSelectionChange,
 }: ArchitectureExplorerProps) {
   const nodes = graph.nodes ?? []
   const connections = graph.connections ?? []
@@ -52,21 +48,12 @@ export function ArchitectureExplorer({
   const [isPanning, setIsPanning] = useState(false)
   const panOrigin = useRef({ x: 0, y: 0, panX: 0, panY: 0 })
   const viewportRef = useRef<HTMLDivElement>(null)
+  const hasFitted = useRef(false)
 
   const selectedNode = nodes.find((node) => node.id === selectedId) ?? null
   const connectedIds = selectedId
     ? getConnectedNodeIds(selectedId, connections)
     : new Set<string>()
-
-  useEffect(() => {
-    if (clearSelectionSignal > 0) {
-      setSelectedId(null)
-    }
-  }, [clearSelectionSignal])
-
-  useEffect(() => {
-    onSelectionChange?.(selectedId !== null)
-  }, [onSelectionChange, selectedId])
 
   const relatedLabels = useMemo(() => {
     if (!selectedId) return []
@@ -99,20 +86,37 @@ export function ArchitectureExplorer({
     const viewport = viewportRef.current
     if (!viewport) return
 
-    const padding = 24
-    const scaleX = (viewport.clientWidth - padding * 2) / canvasSize.width
-    const scaleY = (viewport.clientHeight - padding * 2) / canvasSize.height
-    const nextScale = Math.min(Math.max(Math.min(scaleX, scaleY), MIN_SCALE), 1)
+    const padding = 28
+    const availableWidth = Math.max(viewport.clientWidth - padding * 2, 1)
+    const availableHeight = Math.max(viewport.clientHeight - padding * 2, 1)
+    const scaleX = availableWidth / canvasSize.width
+    const scaleY = availableHeight / canvasSize.height
+    const nextScale = Math.min(
+      Math.max(Math.min(scaleX, scaleY), MIN_SCALE),
+      MAX_SCALE,
+    )
     setScale(nextScale)
     setPan({ x: 0, y: 0 })
   }, [canvasSize.height, canvasSize.width])
 
   useEffect(() => {
+    if (hasFitted.current) return
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(max-width: 767px)').matches) return
+
+    const frame = window.requestAnimationFrame(() => {
+      fitView()
+      hasFitted.current = true
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [fitView])
+
+  useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (!orderedNodes.length) return
-      const currentIndex = selectedId
-        ? orderedNodes.findIndex((node) => node.id === selectedId)
-        : -1
+      if (!selectedId || !orderedNodes.length) return
+
+      const currentIndex = orderedNodes.findIndex((node) => node.id === selectedId)
+      if (currentIndex < 0) return
 
       if (event.key === 'ArrowDown') {
         event.preventDefault()
@@ -159,9 +163,9 @@ export function ArchitectureExplorer({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="mono-label">Architecture explorer · {projectTitle}</p>
+    <div className="flex h-full min-h-0 flex-col gap-3 p-4 md:gap-4 md:p-5">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3">
+        <p className="mono-label">{projectTitle}</p>
         <div className="hidden flex-wrap gap-2 md:flex">
           <ControlButton label="Reset view" onClick={resetView} />
           <ControlButton
@@ -176,15 +180,12 @@ export function ArchitectureExplorer({
         </div>
       </div>
 
-      <ArchitectureTextFlow
-        graph={graph}
-        className="rounded-md border border-border bg-surface/60 p-4"
-      />
+      <ArchitectureTextFlow graph={graph} className="sr-only" />
 
-      <div className="grid gap-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+      <div className="grid min-h-0 flex-1 gap-4 md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] md:overflow-hidden">
         <div
           ref={viewportRef}
-          className="relative min-h-[320px] overflow-hidden rounded-md border border-border bg-background/70 md:min-h-[420px] md:cursor-grab md:active:cursor-grabbing"
+          className="relative min-h-[280px] overflow-hidden rounded-md border border-border bg-background/70 md:min-h-0 md:h-full md:cursor-grab md:active:cursor-grabbing"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -192,7 +193,7 @@ export function ArchitectureExplorer({
           aria-label="Interactive architecture diagram"
         >
           <div
-            className="absolute inset-0 hidden origin-center transition-transform duration-200 motion-reduce:transition-none md:block"
+            className="absolute inset-0 hidden items-center justify-center transition-transform duration-200 motion-reduce:transition-none md:flex"
             style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})` }}
           >
             <DesktopDiagram
@@ -215,20 +216,24 @@ export function ArchitectureExplorer({
           </div>
         </div>
 
-        <ArchitectureNodeDetail
-          node={selectedNode}
-          relatedLabels={relatedLabels}
-          matchedContributions={matchedContributions}
-          derivedTechnology={derivedTechnology}
-        />
+        <div className="min-h-0 md:overflow-y-auto">
+          <ArchitectureNodeDetail
+            node={selectedNode}
+            relatedLabels={relatedLabels}
+            matchedContributions={matchedContributions}
+            derivedTechnology={derivedTechnology}
+          />
+        </div>
       </div>
 
-      <ArchitectureLegend />
+      <div className="shrink-0">
+        <ArchitectureLegend />
+      </div>
 
       <div className="sr-only" aria-live="polite">
         {selectedNode
           ? `Selected ${selectedNode.label}. ${relatedLabels.length ? `Connected systems: ${relatedLabels.join(', ')}` : ''}${matchedContributions.length ? `. Your contribution: ${matchedContributions.join(', ')}` : ''}`
-          : 'No component selected'}
+          : 'No component selected. Select a component in the architecture to inspect it.'}
       </div>
     </div>
   )
@@ -253,7 +258,7 @@ function DesktopDiagram({
 
   return (
     <div
-      className="relative mx-auto"
+      className="relative"
       style={{ width: canvasSize.width, height: canvasSize.height }}
     >
       <svg
@@ -389,7 +394,7 @@ function NodeButton({
       aria-label={`${node.label}, ${node.type}${selected ? ', selected' : neighbor ? ', connected' : ''}`}
       onClick={() => onSelect(node.id)}
       style={style}
-      className={`rounded-md border bg-surface px-3 py-2 text-left transition-[opacity,transform,border-color,box-shadow] duration-200 motion-reduce:transition-none architecture-node-${node.type} ${
+      className={`rounded-md border bg-surface px-3 py-2 text-left transition-[opacity,border-color,box-shadow] duration-200 motion-reduce:transition-none architecture-node-${node.type} ${
         selected
           ? 'border-accent ring-2 ring-accent/25 shadow-sm'
           : neighbor
