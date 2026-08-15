@@ -1,14 +1,10 @@
-import { Hero } from '@/components/home/Hero'
-import { SelectedWork } from '@/components/home/SelectedWork'
-import { Experience } from '@/components/home/Experience'
-import { EngineeringFocus } from '@/components/home/EngineeringFocus'
-import { About } from '@/components/home/About'
-import { Contact } from '@/components/home/Contact'
+import { HomeView } from '@/components/home/HomeView'
 import { client } from '@/lib/sanity/client'
 import { getSiteUrl } from '@/lib/utils'
 import {
   siteSettingsQuery,
   featuredProjectsQuery,
+  recruiterProjectsQuery,
   experienceQuery,
   skillGroupsQuery,
   aboutQuery,
@@ -17,13 +13,15 @@ import {
 export const revalidate = 60
 
 export default async function HomePage() {
-  const [settings, projects, experience, skillGroups, about] = await Promise.all([
-    client.fetch(siteSettingsQuery),
-    client.fetch(featuredProjectsQuery),
-    client.fetch(experienceQuery),
-    client.fetch(skillGroupsQuery),
-    client.fetch(aboutQuery),
-  ])
+  const [settings, projects, recruiterProjects, experience, skillGroups, about] =
+    await Promise.all([
+      client.fetch(siteSettingsQuery),
+      client.fetch(featuredProjectsQuery),
+      client.fetch(recruiterProjectsQuery),
+      client.fetch(experienceQuery),
+      client.fetch(skillGroupsQuery),
+      client.fetch(aboutQuery),
+    ])
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -42,12 +40,14 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero settings={settings} />
-      <SelectedWork projects={projects} />
-      <Experience items={experience} />
-      <EngineeringFocus groups={skillGroups} />
-      <About about={about} />
-      <Contact settings={settings} />
+      <HomeView
+        settings={settings}
+        projects={projects}
+        recruiterProjects={recruiterProjects}
+        experience={experience}
+        skillGroups={skillGroups}
+        about={about}
+      />
     </>
   )
 }

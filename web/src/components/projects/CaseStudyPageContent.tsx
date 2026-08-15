@@ -1,0 +1,46 @@
+import { CaseStudyNav } from '@/components/projects/CaseStudyNav'
+import { ProjectHero } from '@/components/projects/ProjectHero'
+import { ProjectOverview } from '@/components/projects/ProjectOverview'
+import { ProjectProblem } from '@/components/projects/ProjectProblem'
+import { ProjectContribution } from '@/components/projects/ProjectContribution'
+import { ProjectStack } from '@/components/projects/ProjectStack'
+import { ArchitectureSection } from '@/components/projects/ArchitectureSection'
+import { ProjectImplementation } from '@/components/projects/ProjectImplementation'
+import { TechnicalChallenges } from '@/components/projects/TechnicalChallenges'
+import { ProjectOutcome } from '@/components/projects/ProjectOutcome'
+import { ProjectNavigation } from '@/components/projects/ProjectNavigation'
+import { getCaseStudySections } from '@/lib/case-study'
+import type { Project } from '@/lib/sanity/types'
+
+type CaseStudyPageContentProps = {
+  project: Project
+  navProjects: { title: string; slug: string }[]
+  currentSlug: string
+}
+
+export function CaseStudyPageContent({
+  project,
+  navProjects,
+  currentSlug,
+}: CaseStudyPageContentProps) {
+  const sections = getCaseStudySections(project)
+
+  return (
+    <>
+      <ProjectHero project={project} />
+      <CaseStudyNav sections={sections} />
+      <ProjectOverview project={project} />
+      <ProjectProblem project={project} />
+      <ArchitectureSection project={project} />
+      <ProjectImplementation
+        implementation={project.implementation}
+        decisions={project.technicalDecisions}
+      />
+      <TechnicalChallenges challenges={project.technicalChallenges} />
+      <ProjectContribution project={project} />
+      <ProjectOutcome project={project} />
+      <ProjectStack project={project} />
+      <ProjectNavigation currentSlug={currentSlug} projects={navProjects} />
+    </>
+  )
+}

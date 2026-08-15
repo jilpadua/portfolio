@@ -29,6 +29,47 @@ export type TechnicalDecision = {
   rationale?: string
 }
 
+export type ImplementationSection = {
+  title?: string
+  summary?: string
+  steps?: string[]
+}
+
+export type ContributionGroup = {
+  category?: string
+  items?: string[]
+}
+
+export type ArchitectureNodeType =
+  | 'client'
+  | 'gateway'
+  | 'service'
+  | 'database'
+  | 'external'
+
+export type ArchitectureNode = {
+  id: string
+  label: string
+  type: ArchitectureNodeType
+  purpose?: string
+  technology?: string
+  responsibilities?: string[]
+  relatedApis?: string[]
+}
+
+export type ArchitectureConnection = {
+  from: string
+  to: string
+}
+
+export type ArchitectureGraph = {
+  description?: string
+  nodes?: ArchitectureNode[]
+  connections?: ArchitectureConnection[]
+}
+
+export type FocusArea = 'backend' | 'api' | 'database' | 'frontend' | 'mobile'
+
 export type SanityImage = {
   asset?: { _ref: string }
   alt?: string
@@ -39,7 +80,10 @@ export type Project = {
   title: string
   slug: string
   featured?: boolean
+  featuredForRecruiters?: boolean
+  focusAreas?: FocusArea[]
   order?: number
+  duration?: string
   tagline?: string
   shortDescription?: string
   overview?: string
@@ -47,10 +91,14 @@ export type Project = {
   audience?: string
   role?: string
   contribution?: string[]
+  contributionGroups?: ContributionGroup[]
   techGroups?: TechGroup[]
   architecture?: string[]
+  architectureGraph?: ArchitectureGraph
+  implementation?: ImplementationSection[]
   technicalChallenges?: TechnicalChallenge[]
   technicalDecisions?: TechnicalDecision[]
+  outcomes?: string[]
   heroImage?: SanityImage
   gallery?: SanityImage[]
   githubUrl?: string
@@ -91,4 +139,28 @@ export type ProjectCard = Pick<
   | 'contribution'
   | 'techGroups'
   | 'heroImage'
+  | 'featuredForRecruiters'
+  | 'focusAreas'
 >
+
+export type RecruiterProject = Pick<
+  Project,
+  | '_id'
+  | 'title'
+  | 'slug'
+  | 'tagline'
+  | 'shortDescription'
+  | 'techGroups'
+  | 'focusAreas'
+  | 'featuredForRecruiters'
+>
+
+export type CaseStudySectionId =
+  | 'overview'
+  | 'problem'
+  | 'architecture'
+  | 'implementation'
+  | 'challenges'
+  | 'contribution'
+  | 'outcome'
+  | 'technologies'

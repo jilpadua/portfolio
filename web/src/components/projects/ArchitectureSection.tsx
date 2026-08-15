@@ -1,0 +1,79 @@
+'use client'
+
+import { useState } from 'react'
+import { resolveArchitectureGraph } from '@/lib/case-study'
+import type { Project } from '@/lib/sanity/types'
+import { ArchitectureExplorerDialog } from './architecture/ArchitectureExplorerDialog'
+
+type ArchitectureSectionProps = {
+  project: Project
+}
+
+export function ArchitectureSection({ project }: ArchitectureSectionProps) {
+  const graph = resolveArchitectureGraph(project)
+  const [explorerOpen, setExplorerOpen] = useState(false)
+
+  if (!graph?.nodes?.length) return null
+
+  const hasInteractiveGraph = Boolean(project.architectureGraph?.nodes?.length)
+  const summarySteps = graph.nodes.map((node) => node.label)
+
+  return (
+    <>
+      <section
+        id="architecture"
+        className="case-study-section section-padding border-b border-border"
+      >
+        <div className="container-main max-w-3xl">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="mono-label">Architecture</h2>
+            {hasInteractiveGraph && (
+              <button
+                type="button"
+                className="rounded-md border border-accent bg-surface px-3 py-1.5 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-white"
+                onClick={() => setExplorerOpen(true)}
+              >
+                Explore Architecture
+              </button>
+            )}
+          </div>
+
+          {project.architectureGraph?.description && (
+            <p className="mt-4 leading-relaxed text-muted">
+              {project.architectureGraph.description}
+            </p>
+          )}
+
+          <ol className="mt-6 space-y-0">
+            {summarySteps.map((step, index) => (
+              <li key={`${step}-${index}`} className="relative">
+                <div className="flex items-stretch gap-4">
+                  <div className="flex w-8 flex-col items-center">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface font-mono text-xs">
+                      {index + 1}
+                    </span>
+                    {index < summarySteps.length - 1 && (
+                      <span className="my-1 w-px flex-1 bg-border" aria-hidden="true" />
+                    )}
+                  </div>
+                  <div className="pb-6 pt-1">
+                    <p className="font-mono text-sm leading-relaxed md:text-base">{step}</p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {hasInteractiveGraph && project.architectureGraph && (
+        <ArchitectureExplorerDialog
+          graph={project.architectureGraph}
+          projectTitle={project.title}
+          open={explorerOpen}
+          onClose={() => setExplorerOpen(false)}
+        />
+      )}
+    </>
+  )
+}

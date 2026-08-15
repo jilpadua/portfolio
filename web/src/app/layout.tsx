@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AppProviders } from '@/components/providers/AppProviders'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { client } from '@/lib/sanity/client'
@@ -65,15 +66,17 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${plexSans.variable} ${plexMono.variable} h-full`}>
       <body className="min-h-full antialiased">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:shadow"
-        >
-          Skip to content
-        </a>
-        <Header settings={settings} />
-        <main id="main-content">{children}</main>
-        <Footer settings={settings} />
+        <AppProviders>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:shadow"
+          >
+            Skip to content
+          </a>
+          <Header settings={settings} />
+          <main id="main-content">{children}</main>
+          <Footer settings={settings} />
+        </AppProviders>
         <Analytics />
       </body>
     </html>
