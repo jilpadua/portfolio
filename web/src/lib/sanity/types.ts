@@ -1,3 +1,8 @@
+export type SelectedWorkContent = {
+  heading?: string
+  description?: string
+}
+
 export type SiteSettings = {
   name: string
   role: string
@@ -9,6 +14,7 @@ export type SiteSettings = {
   cvUrl?: string
   seoTitle?: string
   seoDescription?: string
+  selectedWork?: SelectedWorkContent
 }
 
 export type TechGroup = {

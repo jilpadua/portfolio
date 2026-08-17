@@ -11,7 +11,11 @@ export const siteSettingsQuery = groq`
     linkedin,
     cvUrl,
     seoTitle,
-    seoDescription
+    seoDescription,
+    selectedWork {
+      heading,
+      description
+    }
   }
 `
 

@@ -82,7 +82,11 @@ export function HomeView({
   return (
     <>
       <Hero settings={settings} />
-      <SelectedWork projects={projects} />
+      <SelectedWork
+        projects={projects}
+        heading={settings?.selectedWork?.heading}
+        description={settings?.selectedWork?.description}
+      />
       <Experience items={experience} />
       <EngineeringFocus groups={skillGroups} />
       <About about={about} />
