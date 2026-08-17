@@ -144,20 +144,20 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: 'engineering',
-      title: 'Engineering',
+      title: 'Skills',
       type: 'object',
       group: 'homepage',
-      description: 'Copy for the Engineering section on the homepage.',
+      description: 'Copy for the Skills / Technical Stack section on the homepage.',
       fields: sectionCopyFields({
         eyebrowPlaceholder: 'Technical focus',
-        headingPlaceholder: 'Engineering',
+        headingPlaceholder: 'Skills',
         descriptionPlaceholder:
           'Technologies organized by capability, with a clear backend emphasis.',
         headingDescription: 'Section title displayed above the skill groups.',
       }),
       initialValue: {
         eyebrow: 'Technical focus',
-        heading: 'Engineering',
+        heading: 'Skills',
         description: 'Technologies organized by capability, with a clear backend emphasis.',
       },
     }),

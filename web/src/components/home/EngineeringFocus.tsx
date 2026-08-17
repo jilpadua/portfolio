@@ -22,7 +22,7 @@ export function EngineeringFocus({
       <div className="container-main">
         <SectionHeading
           eyebrow={eyebrow}
-          title={heading ?? 'Engineering'}
+          title={heading ?? 'Skills'}
           description={description}
         />
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
