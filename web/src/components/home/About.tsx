@@ -12,7 +12,7 @@ export function About({ about }: AboutProps) {
     <section id="about" className="section-padding border-t border-border">
       <div className="container-main">
         <SectionHeading
-          eyebrow="Background"
+          eyebrow={about.eyebrow}
           title={about.headline ?? 'About'}
           description={about.summary}
         />

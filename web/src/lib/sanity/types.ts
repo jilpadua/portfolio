@@ -1,6 +1,21 @@
-export type SelectedWorkContent = {
+export type SectionCopy = {
+  eyebrow?: string
   heading?: string
   description?: string
+}
+
+export type RecruiterCopy = {
+  modeLabel?: string
+  quickProfileHeading?: string
+  projects?: {
+    heading?: string
+    description?: string
+  }
+  ctaHeading?: string
+}
+
+export type FooterCopy = {
+  credit?: string
 }
 
 export type SiteSettings = {
@@ -14,7 +29,12 @@ export type SiteSettings = {
   cvUrl?: string
   seoTitle?: string
   seoDescription?: string
-  selectedWork?: SelectedWorkContent
+  selectedWork?: SectionCopy
+  experience?: SectionCopy
+  engineering?: SectionCopy
+  contact?: SectionCopy
+  recruiter?: RecruiterCopy
+  footer?: FooterCopy
 }
 
 export type TechGroup = {
@@ -142,6 +162,7 @@ export type SkillGroup = {
 }
 
 export type About = {
+  eyebrow?: string
   headline?: string
   summary?: string
   focusPoints?: string[]

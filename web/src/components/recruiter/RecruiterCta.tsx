@@ -12,7 +12,7 @@ export function RecruiterCta({ settings }: RecruiterCtaProps) {
     <section className="section-padding border-t border-border">
       <div className="container-main max-w-3xl">
         <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Interested in working together?
+          {settings.recruiter?.ctaHeading ?? 'Interested in working together?'}
         </h2>
         <div className="mt-6 flex flex-wrap gap-3">
           {settings.cvUrl && (

@@ -4,23 +4,21 @@ import type { ProjectCard as ProjectCardType } from '@/lib/sanity/types'
 
 type SelectedWorkProps = {
   projects: ProjectCardType[]
+  eyebrow?: string
   heading?: string
   description?: string
 }
 
-export function SelectedWork({ projects, heading, description }: SelectedWorkProps) {
+export function SelectedWork({ projects, eyebrow, heading, description }: SelectedWorkProps) {
   if (!projects.length) return null
 
   return (
     <section id="work" className="section-padding border-t border-border">
       <div className="container-main">
         <SectionHeading
-          eyebrow="Portfolio"
+          eyebrow={eyebrow}
           title={heading ?? 'Selected Work'}
-          description={
-            description ??
-            'Projects where I contributed to real systems, applications, APIs, or product functionality.'
-          }
+          description={description}
         />
         <div className="border-b border-border">
           {projects.map((project) => (

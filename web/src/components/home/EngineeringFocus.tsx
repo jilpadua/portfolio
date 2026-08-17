@@ -4,18 +4,26 @@ import type { SkillGroup as SkillGroupType } from '@/lib/sanity/types'
 
 type EngineeringFocusProps = {
   groups: SkillGroupType[]
+  eyebrow?: string
+  heading?: string
+  description?: string
 }
 
-export function EngineeringFocus({ groups }: EngineeringFocusProps) {
+export function EngineeringFocus({
+  groups,
+  eyebrow,
+  heading,
+  description,
+}: EngineeringFocusProps) {
   if (!groups.length) return null
 
   return (
     <section id="engineering" className="section-padding border-t border-border">
       <div className="container-main">
         <SectionHeading
-          eyebrow="Technical focus"
-          title="Engineering"
-          description="Technologies organized by capability, with a clear backend emphasis."
+          eyebrow={eyebrow}
+          title={heading ?? 'Engineering'}
+          description={description}
         />
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {groups.map((group) => (
