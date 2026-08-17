@@ -86,7 +86,7 @@ function RecruiterProjectCard({ project }: { project: ProjectCard }) {
 
   return (
     <article className="project-row border-t border-border first:border-t-0">
-      <div className="grid gap-4 py-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+      <div className="grid gap-4 p-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
         <div>
           <p className="mono-label mb-2">{project.tagline}</p>
           <h3 className="text-2xl font-semibold tracking-tight">{project.title}</h3>

@@ -18,7 +18,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <article className="project-row group">
       <Link
         href={`/projects/${project.slug}`}
-        className="grid gap-6 py-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] md:items-start md:gap-10"
+        className="grid gap-6 p-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] md:items-start md:gap-10"
       >
         <div>
           <p className="mono-label mb-2">{project.tagline}</p>
