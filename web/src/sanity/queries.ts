@@ -164,7 +164,7 @@ export const skillGroupsQuery = groq`
 `
 
 export const aboutQuery = groq`
-  *[_type == "about"][0]{
+  *[_id == "about"][0]{
     eyebrow,
     headline,
     summary,
