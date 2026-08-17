@@ -8,7 +8,7 @@ import type { SiteSettings } from '@/lib/sanity/types'
 const NAV_ITEMS = [
   { href: '#work', label: 'Work' },
   { href: '#experience', label: 'Experience' },
-  { href: '#engineering', label: 'Engineering' },
+  { href: '#engineering', label: 'Skills' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ]

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { FOCUS_AREA_LABELS } from '@/lib/case-study'
 import { flattenTechnologies } from '@/lib/utils'
-import type { FocusArea, ProjectCard } from '@/lib/sanity/types'
+import type { FocusArea, ProjectCard, SiteSettings } from '@/lib/sanity/types'
 
 const FILTER_OPTIONS: Array<{ id: 'all' | FocusArea; label: string }> = [
   { id: 'all', label: 'All' },
@@ -17,9 +17,10 @@ const FILTER_OPTIONS: Array<{ id: 'all' | FocusArea; label: string }> = [
 
 type RecruiterProjectsProps = {
   projects: ProjectCard[]
+  settings?: SiteSettings | null
 }
 
-export function RecruiterProjects({ projects }: RecruiterProjectsProps) {
+export function RecruiterProjects({ projects, settings }: RecruiterProjectsProps) {
   const [activeFilter, setActiveFilter] = useState<'all' | FocusArea>('all')
 
   const filteredProjects = useMemo(() => {
@@ -32,10 +33,14 @@ export function RecruiterProjects({ projects }: RecruiterProjectsProps) {
   return (
     <section id="recruiter-projects" className="section-padding border-b border-border">
       <div className="container-main">
-        <h2 className="mono-label mb-2">Best projects</h2>
-        <p className="max-w-2xl text-base text-muted">
-          Projects selected for backend, API, and integration work.
-        </p>
+        <h2 className="mono-label mb-2">
+          {settings?.recruiter?.projects?.heading ?? 'Best projects'}
+        </h2>
+        {settings?.recruiter?.projects?.description && (
+          <p className="max-w-2xl text-base text-muted">
+            {settings.recruiter.projects.description}
+          </p>
+        )}
 
         <div
           className="mt-6 flex flex-wrap gap-2"

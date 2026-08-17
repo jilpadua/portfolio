@@ -20,7 +20,9 @@ export function RecruiterHero({ settings, experience, skillGroups }: RecruiterHe
   return (
     <section id="hero" className="section-padding border-b border-border pt-24 md:pt-28">
       <div className="container-main">
-        <p className="mono-label mb-4">Recruiter mode</p>
+        {settings.recruiter?.modeLabel && (
+          <p className="mono-label mb-4">{settings.recruiter.modeLabel}</p>
+        )}
         <h1 className="max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
           {settings.name}
         </h1>
@@ -74,7 +76,9 @@ export function RecruiterQuickProfile({
   return (
     <section className="section-padding border-b border-border bg-surface/60">
       <div className="container-main max-w-4xl">
-        <h2 className="mono-label mb-6">Quick profile</h2>
+        <h2 className="mono-label mb-6">
+          {settings.recruiter?.quickProfileHeading ?? 'Quick profile'}
+        </h2>
         <dl className="grid gap-6 sm:grid-cols-2">
           <div>
             <dt className="text-sm font-semibold uppercase tracking-wide">Primary focus</dt>
