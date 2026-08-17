@@ -82,7 +82,6 @@ export function HomeView({
           settings={settings}
         />
         <RecruiterCta settings={settings} />
-        <Contact settings={settings} />
       </>
     )
   }
