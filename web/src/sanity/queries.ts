@@ -67,6 +67,7 @@ export const projectBySlugQuery = groq`
         id,
         label,
         type,
+        logo,
         purpose,
         technology,
         responsibilities,

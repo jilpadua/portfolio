@@ -47,10 +47,22 @@ export type ArchitectureNodeType =
   | 'database'
   | 'external'
 
+export type ArchitectureNodeLogo =
+  | 'none'
+  | 'flutter'
+  | 'graphql'
+  | 'nodejs'
+  | 'database'
+  | 'api-gateway'
+  | 'service'
+  | 'hardware'
+  | 'parking-device'
+
 export type ArchitectureNode = {
   id: string
   label: string
   type: ArchitectureNodeType
+  logo?: ArchitectureNodeLogo
   purpose?: string
   technology?: string
   responsibilities?: string[]

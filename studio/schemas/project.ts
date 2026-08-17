@@ -8,6 +8,18 @@ const architectureNodeTypeOptions = [
   { title: 'External System', value: 'external' },
 ]
 
+const architectureNodeLogoOptions = [
+  { title: 'None', value: 'none' },
+  { title: 'Flutter', value: 'flutter' },
+  { title: 'GraphQL', value: 'graphql' },
+  { title: 'Node.js', value: 'nodejs' },
+  { title: 'Database', value: 'database' },
+  { title: 'API Gateway', value: 'api-gateway' },
+  { title: 'Service', value: 'service' },
+  { title: 'Hardware', value: 'hardware' },
+  { title: 'Parking Device', value: 'parking-device' },
+]
+
 const focusAreaOptions = [
   { title: 'Backend', value: 'backend' },
   { title: 'APIs', value: 'api' },
@@ -213,6 +225,13 @@ export const project = defineType({
                   type: 'string',
                   options: { list: architectureNodeTypeOptions },
                   validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'logo',
+                  title: 'Logo',
+                  type: 'string',
+                  options: { list: architectureNodeLogoOptions },
+                  description: 'Optional visual icon for the static architecture flow',
                 }),
                 defineField({ name: 'purpose', title: 'Purpose', type: 'text', rows: 2 }),
                 defineField({ name: 'technology', title: 'Technology', type: 'string' }),
