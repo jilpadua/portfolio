@@ -1,5 +1,5 @@
 import type { ArchitectureGraph } from '@/lib/sanity/types'
-import { formatArchitectureTextFlow } from '@/lib/architecture-graph'
+import { getOrderedNodes } from '@/lib/architecture-graph'
 
 type ArchitectureTextFlowProps = {
   graph: ArchitectureGraph
@@ -7,23 +7,28 @@ type ArchitectureTextFlowProps = {
 }
 
 export function ArchitectureTextFlow({ graph, className = '' }: ArchitectureTextFlowProps) {
-  const steps = formatArchitectureTextFlow(graph)
-  if (!steps.length) return null
+  const nodes = getOrderedNodes(graph)
+  if (!nodes.length) return null
 
   return (
     <div className={className}>
       <p className="mono-label mb-3">Architecture flow</p>
-      <ol className="mx-auto w-full space-y-1 font-mono text-sm leading-relaxed text-muted sm:w-[82%] md:w-[68%]">
-        {steps.map((step, index) => (
-          <li key={`${step}-${index}`}>
+      <ol className="mx-auto flex max-w-sm flex-col items-center text-center">
+        {nodes.map((node, index) => (
+          <li key={node.id} className="flex w-full flex-col items-center">
             {index > 0 && (
-              <span aria-hidden="true" className="mb-1 block text-center text-accent">
-                ↓
-              </span>
+              <div
+                aria-hidden="true"
+                className="flex flex-col items-center py-3"
+              >
+                <span className="h-5 w-px bg-border" />
+                <span className="text-sm leading-none text-accent">↓</span>
+              </div>
             )}
-            <span className="block rounded-md border border-border bg-surface px-3 py-2 text-center break-words text-foreground">
-              {step}
-            </span>
+            <p className="mono-label">{node.type}</p>
+            <p className="mt-1 break-words text-base font-medium text-foreground">
+              {node.label}
+            </p>
           </li>
         ))}
       </ol>
