@@ -14,7 +14,7 @@ function IconFrame({ children }: { children: ReactNode }) {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-5 w-5"
+      className="h-6 w-6"
       aria-hidden="true"
     >
       {children}
@@ -24,10 +24,15 @@ function IconFrame({ children }: { children: ReactNode }) {
 
 function FlutterIcon(_: IconProps) {
   return (
-    <IconFrame>
-      <path d="M14 4 6 12l4 4 12-12H14Z" />
-      <path d="m10 16 4 4h8l-8-8" />
-    </IconFrame>
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-6 w-6"
+      aria-hidden="true"
+    >
+      <path d="M12.2 3.2 4.4 11l3.7 3.7L19.6 3.2H12.2Z" />
+      <path d="m8.1 14.7 4.1 4.1 7.4-7.4-4.1-4.1z" />
+    </svg>
   )
 }
 
