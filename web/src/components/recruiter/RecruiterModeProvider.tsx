@@ -99,7 +99,17 @@ export function RecruiterModeProvider({ children }: RecruiterModeProviderProps) 
 
   const toggleRecruiterMode = useCallback(() => {
     setRecruiterMode(!isRecruiterMode)
-  }, [isRecruiterMode, setRecruiterMode])
+    if (pathname !== '/') return
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        document.getElementById('hero')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      })
+    })
+  }, [isRecruiterMode, pathname, setRecruiterMode])
 
   const value = useMemo(
     () => ({
