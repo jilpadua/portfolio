@@ -11,7 +11,8 @@ export function Footer({ settings }: FooterProps) {
     <footer className="border-t border-border">
       <div className="container-main flex flex-col gap-3 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
         <p>
-          © {year} {settings?.name ?? 'Jil Padua'}. Built with Next.js and Sanity.
+          © {year} {settings?.name ?? 'Jil Padua'}.
+          {settings?.footer?.credit ? ` ${settings.footer.credit}` : ''}
         </p>
         <div className="flex flex-wrap gap-4">
           {settings?.github && (

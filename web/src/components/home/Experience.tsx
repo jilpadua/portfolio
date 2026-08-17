@@ -4,18 +4,21 @@ import type { Experience as ExperienceType } from '@/lib/sanity/types'
 
 type ExperienceProps = {
   items: ExperienceType[]
+  eyebrow?: string
+  heading?: string
+  description?: string
 }
 
-export function Experience({ items }: ExperienceProps) {
+export function Experience({ items, eyebrow, heading, description }: ExperienceProps) {
   if (!items.length) return null
 
   return (
     <section id="experience" className="section-padding border-t border-border">
       <div className="container-main">
         <SectionHeading
-          eyebrow="Career"
-          title="Experience"
-          description="Professional roles with engineering context beyond a resume listing."
+          eyebrow={eyebrow}
+          title={heading ?? 'Experience'}
+          description={description}
         />
         <div className="space-y-8">
           {items.map((item) => (

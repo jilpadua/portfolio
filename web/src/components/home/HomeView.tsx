@@ -71,10 +71,17 @@ export function HomeView({
           experience={experience}
           skillGroups={skillGroups}
         />
-        <Experience items={experience} />
-        <RecruiterProjects projects={recruiterProjects.length ? recruiterProjects : projects} />
+        <Experience
+          items={experience}
+          eyebrow={settings?.experience?.eyebrow}
+          heading={settings?.experience?.heading}
+          description={settings?.experience?.description}
+        />
+        <RecruiterProjects
+          projects={recruiterProjects.length ? recruiterProjects : projects}
+          settings={settings}
+        />
         <RecruiterCta settings={settings} />
-        <Contact settings={settings} />
       </>
     )
   }
@@ -82,9 +89,24 @@ export function HomeView({
   return (
     <>
       <Hero settings={settings} />
-      <SelectedWork projects={projects} />
-      <Experience items={experience} />
-      <EngineeringFocus groups={skillGroups} />
+      <SelectedWork
+        projects={projects}
+        eyebrow={settings?.selectedWork?.eyebrow}
+        heading={settings?.selectedWork?.heading}
+        description={settings?.selectedWork?.description}
+      />
+      <Experience
+        items={experience}
+        eyebrow={settings?.experience?.eyebrow}
+        heading={settings?.experience?.heading}
+        description={settings?.experience?.description}
+      />
+      <EngineeringFocus
+        groups={skillGroups}
+        eyebrow={settings?.engineering?.eyebrow}
+        heading={settings?.engineering?.heading}
+        description={settings?.engineering?.description}
+      />
       <About about={about} />
       <Contact settings={settings} />
     </>

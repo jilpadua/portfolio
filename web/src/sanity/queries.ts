@@ -11,7 +11,39 @@ export const siteSettingsQuery = groq`
     linkedin,
     cvUrl,
     seoTitle,
-    seoDescription
+    seoDescription,
+    selectedWork {
+      eyebrow,
+      heading,
+      description
+    },
+    experience {
+      eyebrow,
+      heading,
+      description
+    },
+    engineering {
+      eyebrow,
+      heading,
+      description
+    },
+    contact {
+      eyebrow,
+      heading,
+      description
+    },
+    recruiter {
+      modeLabel,
+      quickProfileHeading,
+      projects {
+        heading,
+        description
+      },
+      ctaHeading
+    },
+    footer {
+      credit
+    }
   }
 `
 
@@ -132,7 +164,8 @@ export const skillGroupsQuery = groq`
 `
 
 export const aboutQuery = groq`
-  *[_type == "about"][0]{
+  *[_id == "about"][0]{
+    eyebrow,
     headline,
     summary,
     focusPoints
