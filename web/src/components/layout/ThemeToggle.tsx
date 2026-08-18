@@ -15,7 +15,7 @@ function SunIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-4 w-4"
@@ -33,7 +33,7 @@ function MoonIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-4 w-4"
@@ -65,7 +65,7 @@ export function ThemeToggle() {
       aria-label={label}
       aria-pressed={mounted ? isDark : undefined}
       title={label}
-      className="inline-flex items-center justify-center rounded-md border border-border bg-surface p-2 text-muted transition-colors hover:text-foreground lg:px-2.5 lg:py-1.5"
+      className="inline-flex size-9 items-center justify-center rounded-md border border-border bg-surface text-foreground transition-colors hover:bg-surface-hover"
     >
       <span className="inline-flex h-4 w-4 items-center justify-center" aria-hidden="true">
         {mounted ? isDark ? <SunIcon /> : <MoonIcon /> : null}

@@ -20,7 +20,7 @@ export function TechnicalChallenges({ challenges }: TechnicalChallengesProps) {
   return (
     <section
       id="challenges"
-      className="case-study-section section-padding border-b border-border bg-surface/60"
+      className="case-study-section section-padding border-b border-border bg-section"
     >
       <div className="container-main max-w-3xl">
         <h2 className="mono-label mb-8">Engineering challenges</h2>

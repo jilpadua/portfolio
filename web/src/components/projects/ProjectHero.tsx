@@ -25,7 +25,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
           {project.title}
         </h1>
         {techLine && (
-          <p className="mt-4 font-mono text-sm tracking-wide text-muted">{techLine}</p>
+          <p className="mt-4 font-mono text-sm tracking-wide text-meta">{techLine}</p>
         )}
         <div className="mt-6 flex flex-wrap gap-4 text-sm">
           {project.liveUrl && (
