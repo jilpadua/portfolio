@@ -24,7 +24,7 @@ export function Experience({ items, eyebrow, heading, description }: ExperienceP
           {items.map((item) => (
             <article key={item._id} className="grid gap-3 border-t border-border pt-8 md:grid-cols-[220px_1fr] md:gap-8">
               <div>
-                <p className="font-mono text-xs uppercase tracking-wide text-muted">
+                <p className="font-mono text-xs uppercase tracking-wide text-meta">
                   {formatDateRange(item.startDate, item.endDate, item.isCurrent)}
                 </p>
               </div>

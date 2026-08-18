@@ -46,7 +46,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             </div>
           ) : null}
           {techLine && (
-            <p className="mt-5 font-mono text-xs tracking-wide text-muted">{techLine}</p>
+            <p className="mt-5 font-mono text-xs tracking-wide text-meta">{techLine}</p>
           )}
           <p className="mt-4 text-sm font-medium text-accent">View case study →</p>
         </div>
@@ -66,7 +66,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 {project.title}
               </p>
               {techLine && (
-                <p className="mt-2 font-mono text-[11px] leading-relaxed text-muted">{techLine}</p>
+                <p className="mt-2 font-mono text-[11px] leading-relaxed text-meta">{techLine}</p>
               )}
             </div>
           )}
