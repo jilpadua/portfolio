@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRecruiterMode } from '@/components/recruiter/RecruiterModeProvider'
+import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import type { SiteSettings } from '@/lib/sanity/types'
 
 const NAV_ITEMS = [
@@ -71,12 +72,13 @@ export function Header({ settings }: HeaderProps) {
             aria-pressed={isReady ? isRecruiterMode : false}
             className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
               isReady && isRecruiterMode
-                ? 'border-accent bg-accent text-white'
+                ? 'border-accent bg-accent text-accent-foreground'
                 : 'border-border bg-surface text-muted hover:text-foreground'
             }`}
           >
             {recruiterToggleLabel}
           </button>
+          <ThemeToggle />
           {settings?.github && (
             <a
               href={settings.github}
@@ -106,12 +108,13 @@ export function Header({ settings }: HeaderProps) {
             aria-pressed={isReady ? isRecruiterMode : false}
             className={`rounded-md border px-2.5 py-2 text-xs transition-colors ${
               isReady && isRecruiterMode
-                ? 'border-accent bg-accent text-white'
+                ? 'border-accent bg-accent text-accent-foreground'
                 : 'border-border bg-surface text-muted'
             }`}
           >
             {mobileToggleLabel}
           </button>
+          <ThemeToggle />
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-sm"

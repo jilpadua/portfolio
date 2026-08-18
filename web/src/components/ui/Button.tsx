@@ -10,7 +10,7 @@ type ButtonProps = ComponentPropsWithoutRef<'a'> & {
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-accent text-white hover:bg-accent-hover border border-accent',
+    'bg-accent text-accent-foreground hover:bg-accent-hover border border-accent',
   secondary:
     'bg-surface text-foreground hover:bg-background border border-border',
   ghost: 'text-foreground hover:text-accent border border-transparent',

@@ -57,7 +57,7 @@ export function RecruiterProjects({ projects, settings }: RecruiterProjectsProps
                 onClick={() => setActiveFilter(filter.id)}
                 className={`rounded-md border px-3 py-1.5 text-sm transition-colors duration-200 motion-reduce:transition-none ${
                   isActive
-                    ? 'border-accent bg-accent text-white'
+                    ? 'border-accent bg-accent text-accent-foreground'
                     : 'border-border bg-surface text-muted hover:text-foreground'
                 }`}
               >
