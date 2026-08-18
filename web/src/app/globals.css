@@ -136,6 +136,10 @@ body {
   background: var(--surface-hover);
 }
 
+:root:not(.dark) .project-row:hover {
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+}
+
 .header-scrolled {
   border-bottom-color: var(--border);
   background: color-mix(in srgb, var(--background) 92%, transparent);
