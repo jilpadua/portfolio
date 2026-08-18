@@ -109,7 +109,7 @@ function RecruiterProjectCard({ project }: { project: ProjectCard }) {
           {techLine && (
             <div className="mt-4">
               <p className="mono-label mb-2">Technologies</p>
-              <p className="font-mono text-xs tracking-wide text-muted">{techLine}</p>
+              <p className="font-mono text-xs tracking-wide text-meta">{techLine}</p>
             </div>
           )}
         </div>

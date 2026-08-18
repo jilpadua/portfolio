@@ -6,13 +6,16 @@
   color-scheme: light;
   --background: #f7f7f5;
   --background-subtle: #f2f2ef;
+  --section: #fafaf8;
   --foreground: #111111;
   --muted: #5c5c5c;
+  --meta: #5c5c5c;
   --border: #e2e2de;
   --accent: #0f5c56;
   --accent-hover: #0a4540;
   --accent-foreground: #ffffff;
   --surface: #ffffff;
+  --surface-hover: #f2f2ef;
   --accent-wash: color-mix(in srgb, var(--accent) 4%, transparent);
   --selection: color-mix(in srgb, var(--accent) 15%, transparent);
   --overlay: color-mix(in srgb, var(--foreground) 45%, transparent);
@@ -20,15 +23,18 @@
 
 .dark {
   color-scheme: dark;
-  --background: #141413;
-  --background-subtle: #10100f;
+  --background: #121211;
+  --background-subtle: #181817;
+  --section: #181817;
   --foreground: #ecece8;
-  --muted: #a8a8a0;
-  --border: #2c2c28;
+  --muted: #b8b8b0;
+  --meta: #9c9c94;
+  --border: #3d3d36;
   --accent: #6ba89f;
   --accent-hover: #7db7ae;
   --accent-foreground: #0a2f2c;
-  --surface: #1c1c1a;
+  --surface: #222220;
+  --surface-hover: #2a2a26;
   --accent-wash: color-mix(in srgb, var(--accent) 8%, transparent);
   --selection: color-mix(in srgb, var(--accent) 28%, transparent);
 }
@@ -37,11 +43,14 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-meta: var(--meta);
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-section: var(--section);
   --font-sans: var(--font-plex-sans);
   --font-mono: var(--font-plex-mono);
 }
@@ -113,17 +122,18 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--meta);
 }
 
 .project-row {
   border-top: 1px solid var(--border);
+  background: var(--surface);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .project-row:hover {
   border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  background: var(--surface-hover);
 }
 
 .header-scrolled {

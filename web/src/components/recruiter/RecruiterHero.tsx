@@ -74,7 +74,7 @@ export function RecruiterQuickProfile({
   const currentRole = experience.find((item) => item.isCurrent)
 
   return (
-    <section className="section-padding border-b border-border bg-surface/60">
+    <section className="section-padding border-b border-border bg-section">
       <div className="container-main max-w-4xl">
         <h2 className="mono-label mb-6">
           {settings.recruiter?.quickProfileHeading ?? 'Quick profile'}

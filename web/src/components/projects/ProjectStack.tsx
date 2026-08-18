@@ -18,7 +18,7 @@ export function ProjectStack({ project }: ProjectStackProps) {
               <h3 className="text-sm font-semibold uppercase tracking-wide">
                 {CATEGORY_LABELS[group.category] ?? group.category}
               </h3>
-              <p className="mt-2 font-mono text-sm text-muted">
+              <p className="mt-2 font-mono text-sm text-meta">
                 {group.technologies?.join(' · ')}
               </p>
             </div>

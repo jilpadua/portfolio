@@ -13,7 +13,7 @@ export function ProjectContribution({ project }: ProjectContributionProps) {
   return (
     <section
       id="contribution"
-      className="case-study-section section-padding border-b border-border bg-surface/60"
+      className="case-study-section section-padding border-b border-border bg-section"
     >
       <div className="container-main max-w-3xl">
         <h2 className="mono-label mb-4">My contribution</h2>
