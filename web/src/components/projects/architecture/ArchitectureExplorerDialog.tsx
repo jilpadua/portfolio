@@ -56,7 +56,7 @@ export function ArchitectureExplorerDialog({
   return (
     <dialog
       ref={dialogRef}
-      className="fixed inset-0 z-[70] m-0 h-full max-h-none w-full max-w-none border-0 bg-transparent p-0 backdrop:bg-foreground/40"
+      className="fixed inset-0 z-[70] m-0 h-full max-h-none w-full max-w-none border-0 bg-transparent p-0"
       onClose={onClose}
       onCancel={(event) => {
         event.preventDefault()
