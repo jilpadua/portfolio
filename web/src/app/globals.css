@@ -1,13 +1,36 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
   --background: #f7f7f5;
+  --background-subtle: #f2f2ef;
   --foreground: #111111;
   --muted: #5c5c5c;
   --border: #e2e2de;
   --accent: #0f5c56;
   --accent-hover: #0a4540;
+  --accent-foreground: #ffffff;
   --surface: #ffffff;
+  --accent-wash: color-mix(in srgb, var(--accent) 4%, transparent);
+  --selection: color-mix(in srgb, var(--accent) 15%, transparent);
+  --overlay: color-mix(in srgb, var(--foreground) 45%, transparent);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #141413;
+  --background-subtle: #10100f;
+  --foreground: #ecece8;
+  --muted: #a8a8a0;
+  --border: #2c2c28;
+  --accent: #6ba89f;
+  --accent-hover: #7db7ae;
+  --accent-foreground: #0a2f2c;
+  --surface: #1c1c1a;
+  --accent-wash: color-mix(in srgb, var(--accent) 8%, transparent);
+  --selection: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 @theme inline {
@@ -17,6 +40,7 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
   --color-surface: var(--surface);
   --font-sans: var(--font-plex-sans);
   --font-mono: var(--font-plex-mono);
@@ -24,6 +48,7 @@
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -45,13 +70,14 @@ body {
   color: var(--foreground);
   font-family: var(--font-plex-sans), system-ui, sans-serif;
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(15, 92, 86, 0.04), transparent 42%),
-    linear-gradient(to bottom, var(--background), #f2f2ef);
+    radial-gradient(circle at 50% 0%, var(--accent-wash), transparent 42%),
+    linear-gradient(to bottom, var(--background), var(--background-subtle));
   min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 ::selection {
-  background: rgba(15, 92, 86, 0.15);
+  background: var(--selection);
 }
 
 :focus-visible {
@@ -96,13 +122,13 @@ body {
 }
 
 .project-row:hover {
-  border-color: rgba(15, 92, 86, 0.35);
-  background: rgba(255, 255, 255, 0.55);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
 
 .header-scrolled {
   border-bottom-color: var(--border);
-  background: rgba(247, 247, 245, 0.92);
+  background: color-mix(in srgb, var(--background) 92%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -134,25 +160,25 @@ body {
 }
 
 .architecture-node-client {
-  background: rgba(15, 92, 86, 0.06);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .architecture-node-gateway {
-  background: rgba(17, 17, 17, 0.04);
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
 }
 
 .architecture-node-service {
-  background: rgba(255, 255, 255, 0.95);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
 }
 
 .architecture-node-database {
-  background: rgba(15, 92, 86, 0.1);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .architecture-node-external {
-  background: rgba(92, 92, 92, 0.08);
+  background: color-mix(in srgb, var(--muted) 12%, transparent);
 }
 
 dialog::backdrop {
-  background: rgba(17, 17, 17, 0.45);
+  background: var(--overlay);
 }

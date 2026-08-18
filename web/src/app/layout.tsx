@@ -64,7 +64,11 @@ export default async function RootLayout({
   const settings = await client.fetch(siteSettingsQuery)
 
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable} h-full`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${plexSans.variable} ${plexMono.variable} h-full`}
+    >
       <body className="min-h-full antialiased">
         <AppProviders>
           <a

@@ -1,6 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
+import { ThemeProvider } from 'next-themes'
 import {
   RecruiterModeProvider,
   RecruiterModeUrlSync,
@@ -12,11 +13,13 @@ type AppProvidersProps = {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <RecruiterModeProvider>
-      <Suspense fallback={null}>
-        <RecruiterModeUrlSync />
-      </Suspense>
-      {children}
-    </RecruiterModeProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <RecruiterModeProvider>
+        <Suspense fallback={null}>
+          <RecruiterModeUrlSync />
+        </Suspense>
+        {children}
+      </RecruiterModeProvider>
+    </ThemeProvider>
   )
 }
