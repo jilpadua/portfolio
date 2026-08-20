@@ -6,10 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { trackPortfolioEvent } from '@/lib/analytics/track'
 
 type RecruiterModeContextValue = {
   isRecruiterMode: boolean
@@ -69,6 +71,10 @@ export function RecruiterModeProvider({ children }: RecruiterModeProviderProps) 
 
   const setRecruiterMode = useCallback(
     (value: boolean) => {
+      if (value !== isRecruiterMode) {
+        trackPortfolioEvent(value ? 'recruiter_mode_entered' : 'recruiter_mode_exited')
+      }
+
       setIsRecruiterModeState(value)
       sessionStorage.setItem(STORAGE_KEY, value ? 'true' : 'false')
       setIsReady(true)
@@ -94,7 +100,7 @@ export function RecruiterModeProvider({ children }: RecruiterModeProviderProps) 
       const query = params.toString()
       router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
     },
-    [pathname, router],
+    [isRecruiterMode, pathname, router],
   )
 
   const toggleRecruiterMode = useCallback(() => {
@@ -139,10 +145,20 @@ export function RecruiterModeProvider({ children }: RecruiterModeProviderProps) 
 export function RecruiterModeUrlSync() {
   const searchParams = useSearchParams()
   const { applyResolvedMode, markReady } = useContext(RecruiterModeContext)
+  const hasInitialized = useRef(false)
 
   useEffect(() => {
     const urlMode = searchParams.get('mode')
-    applyResolvedMode(resolveRecruiterMode(urlMode))
+    const resolved = resolveRecruiterMode(urlMode)
+
+    if (!hasInitialized.current) {
+      hasInitialized.current = true
+      if (urlMode === 'recruiter') {
+        trackPortfolioEvent('recruiter_mode_entered')
+      }
+    }
+
+    applyResolvedMode(resolved)
     markReady()
   }, [applyResolvedMode, markReady, searchParams])
 

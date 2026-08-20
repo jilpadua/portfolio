@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button'
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import { CATEGORY_LABELS } from '@/lib/utils'
 import type { Experience, SiteSettings, SkillGroup } from '@/lib/sanity/types'
 
@@ -48,9 +49,11 @@ export function RecruiterHero({ settings, experience, skillGroups }: RecruiterHe
 
         <div className="mt-8 flex flex-wrap gap-3">
           {settings.cvUrl && (
-            <Button href={settings.cvUrl} variant="primary">
-              View Resume
-            </Button>
+            <TrackedLink event="resume_clicked">
+              <Button href={settings.cvUrl} variant="primary">
+                View Resume
+              </Button>
+            </TrackedLink>
           )}
           <Button href="#recruiter-projects" variant="secondary">
             View Projects
