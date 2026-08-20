@@ -1,3 +1,4 @@
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import type { SiteSettings } from '@/lib/sanity/types'
 
 type FooterProps = {
@@ -16,29 +17,35 @@ export function Footer({ settings }: FooterProps) {
         </p>
         <div className="flex flex-wrap gap-4">
           {settings?.github && (
-            <a
-              href={settings.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground"
-            >
-              GitHub
-            </a>
+            <TrackedLink event="github_clicked">
+              <a
+                href={settings.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground"
+              >
+                GitHub
+              </a>
+            </TrackedLink>
           )}
           {settings?.linkedin && (
-            <a
-              href={settings.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground"
-            >
-              LinkedIn
-            </a>
+            <TrackedLink event="linkedin_clicked">
+              <a
+                href={settings.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground"
+              >
+                LinkedIn
+              </a>
+            </TrackedLink>
           )}
           {settings?.email && (
-            <a href={`mailto:${settings.email}`} className="hover:text-foreground">
-              Email
-            </a>
+            <TrackedLink event="contact_clicked">
+              <a href={`mailto:${settings.email}`} className="hover:text-foreground">
+                Email
+              </a>
+            </TrackedLink>
           )}
         </div>
       </div>

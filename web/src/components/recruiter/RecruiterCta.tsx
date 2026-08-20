@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button'
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import type { SiteSettings } from '@/lib/sanity/types'
 
 type RecruiterCtaProps = {
@@ -16,19 +17,25 @@ export function RecruiterCta({ settings }: RecruiterCtaProps) {
         </h2>
         <div className="mt-6 flex flex-wrap gap-3">
           {settings.cvUrl && (
-            <Button href={settings.cvUrl} variant="primary">
-              Download Resume
-            </Button>
+            <TrackedLink event="resume_clicked">
+              <Button href={settings.cvUrl} variant="primary">
+                Download Resume
+              </Button>
+            </TrackedLink>
           )}
           {settings.github && (
-            <Button href={settings.github} variant="secondary">
-              View GitHub
-            </Button>
+            <TrackedLink event="github_clicked">
+              <Button href={settings.github} variant="secondary">
+                View GitHub
+              </Button>
+            </TrackedLink>
           )}
           {settings.email && (
-            <Button href={`mailto:${settings.email}`} variant="ghost">
-              Contact Me
-            </Button>
+            <TrackedLink event="contact_clicked">
+              <Button href={`mailto:${settings.email}`} variant="ghost">
+                Contact Me
+              </Button>
+            </TrackedLink>
           )}
         </div>
       </div>
