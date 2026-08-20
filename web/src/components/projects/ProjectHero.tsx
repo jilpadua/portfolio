@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import { urlFor } from '@/lib/sanity/image'
 import { flattenTechnologies } from '@/lib/utils'
 import type { Project } from '@/lib/sanity/types'
@@ -39,14 +40,19 @@ export function ProjectHero({ project }: ProjectHeroProps) {
             </a>
           )}
           {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
+            <TrackedLink
+              event="github_clicked"
+              context={{ projectSlug: project.slug, projectTitle: project.title }}
             >
-              GitHub
-            </a>
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                GitHub
+              </a>
+            </TrackedLink>
           )}
         </div>
         <div className="relative mt-10 aspect-[16/9] overflow-hidden border border-border bg-surface">

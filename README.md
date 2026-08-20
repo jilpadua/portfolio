@@ -42,9 +42,17 @@ Edit content in Sanity Studio. Key document types:
 - Skill Groups
 - About
 
+## Analytics and notifications
+
+- Enable **Web Analytics** in the Vercel project dashboard. `@vercel/analytics` is already mounted in the Next.js root layout.
+- High-intent actions (Recruiter Mode entered, resume click, case study view, contact click) can email you via `POST /api/portfolio-notify`.
+- Set the server-only SMTP, Upstash, and `NOTIFICATIONS_ENABLED=true` variables from `.env.example` in `web/.env.local` and Vercel. `NEXT_PUBLIC_SITE_URL` must match the deployed origin.
+- Local rate limits use in-memory storage and reset on restart. Production anti-spam requires Upstash Redis.
+- Rollback: set `NOTIFICATIONS_ENABLED=false` to stop emails immediately without removing analytics.
+
 ## Deploy
 
-- **Web:** Vercel (set env vars from `.env.example`)
+- **Web:** Vercel (set env vars from `.env.example`; Root Directory `web`)
 - **Studio:** `cd studio && npm run deploy`
 
 ## Content gaps to fill in Studio

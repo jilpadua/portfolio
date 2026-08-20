@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button'
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import type { SiteSettings } from '@/lib/sanity/types'
 
 type HeroProps = {
@@ -26,9 +27,11 @@ export function Hero({ settings }: HeroProps) {
             View Projects
           </Button>
           {settings.github && (
-            <Button href={settings.github} variant="secondary">
-              GitHub
-            </Button>
+            <TrackedLink event="github_clicked">
+              <Button href={settings.github} variant="secondary">
+                GitHub
+              </Button>
+            </TrackedLink>
           )}
           <Button href="#contact" variant="ghost">
             Contact

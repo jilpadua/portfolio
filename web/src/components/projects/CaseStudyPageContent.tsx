@@ -9,6 +9,7 @@ import { ProjectImplementation } from '@/components/projects/ProjectImplementati
 import { TechnicalChallenges } from '@/components/projects/TechnicalChallenges'
 import { ProjectOutcome } from '@/components/projects/ProjectOutcome'
 import { ProjectNavigation } from '@/components/projects/ProjectNavigation'
+import { CaseStudyViewTracker } from '@/components/analytics/CaseStudyViewTracker'
 import { getCaseStudySections } from '@/lib/case-study'
 import type { Project } from '@/lib/sanity/types'
 
@@ -27,6 +28,7 @@ export function CaseStudyPageContent({
 
   return (
     <>
+      <CaseStudyViewTracker projectTitle={project.title} projectSlug={currentSlug} />
       <ProjectHero project={project} />
       <CaseStudyNav sections={sections} />
       <ProjectOverview project={project} />

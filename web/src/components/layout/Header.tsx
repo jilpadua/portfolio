@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRecruiterMode } from '@/components/recruiter/RecruiterModeProvider'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { TrackedLink } from '@/components/analytics/TrackedLink'
 import type { SiteSettings } from '@/lib/sanity/types'
 
 const NAV_ITEMS = [
@@ -80,24 +81,28 @@ export function Header({ settings }: HeaderProps) {
           </button>
           <ThemeToggle />
           {settings?.github && (
-            <a
-              href={settings.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted transition-colors hover:text-foreground"
-            >
-              GitHub
-            </a>
+            <TrackedLink event="github_clicked">
+              <a
+                href={settings.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted transition-colors hover:text-foreground"
+              >
+                GitHub
+              </a>
+            </TrackedLink>
           )}
           {settings?.linkedin && (
-            <a
-              href={settings.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted transition-colors hover:text-foreground"
-            >
-              LinkedIn
-            </a>
+            <TrackedLink event="linkedin_clicked">
+              <a
+                href={settings.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted transition-colors hover:text-foreground"
+              >
+                LinkedIn
+              </a>
+            </TrackedLink>
           )}
         </nav>
 
@@ -145,24 +150,28 @@ export function Header({ settings }: HeaderProps) {
               </Link>
             ))}
             {settings?.github && (
-              <a
-                href={settings.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-md px-2 py-2 text-sm text-foreground hover:bg-background"
-              >
-                GitHub
-              </a>
+              <TrackedLink event="github_clicked">
+                <a
+                  href={settings.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md px-2 py-2 text-sm text-foreground hover:bg-background"
+                >
+                  GitHub
+                </a>
+              </TrackedLink>
             )}
             {settings?.linkedin && (
-              <a
-                href={settings.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-md px-2 py-2 text-sm text-foreground hover:bg-background"
-              >
-                LinkedIn
-              </a>
+              <TrackedLink event="linkedin_clicked">
+                <a
+                  href={settings.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md px-2 py-2 text-sm text-foreground hover:bg-background"
+                >
+                  LinkedIn
+                </a>
+              </TrackedLink>
             )}
           </div>
         </nav>
