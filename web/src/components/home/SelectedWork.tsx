@@ -13,7 +13,7 @@ export function SelectedWork({ projects, eyebrow, heading, description }: Select
   if (!projects.length) return null
 
   return (
-    <section id="work" className="section-padding border-t border-border">
+    <section id="work" className="section-padding">
       <div className="container-main">
         <SectionHeading
           eyebrow={eyebrow}

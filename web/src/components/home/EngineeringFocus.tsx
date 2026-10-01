@@ -18,7 +18,7 @@ export function EngineeringFocus({
   if (!groups.length) return null
 
   return (
-    <section id="engineering" className="section-padding border-t border-border">
+    <section id="engineering" className="section-padding">
       <div className="container-main">
         <SectionHeading
           eyebrow={eyebrow}

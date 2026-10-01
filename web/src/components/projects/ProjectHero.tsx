@@ -16,7 +16,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
   const techLine = flattenTechnologies(project.techGroups)
 
   return (
-    <section className="section-padding border-b border-border pt-24 md:pt-28">
+    <section className="section-padding pt-24 md:pt-28">
       <div className="container-main">
         <Link href="/#work" className="mono-label mb-6 inline-block hover:text-foreground">
           ← Back to work

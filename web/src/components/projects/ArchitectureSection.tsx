@@ -22,7 +22,7 @@ export function ArchitectureSection({ project }: ArchitectureSectionProps) {
     <>
       <section
         id="architecture"
-        className="case-study-section section-padding border-b border-border"
+        className="case-study-section section-padding"
       >
         <div className="container-main max-w-3xl">
           <div className="flex flex-wrap items-end justify-between gap-4">

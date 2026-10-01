@@ -10,7 +10,7 @@ export function Contact({ settings }: ContactProps) {
   const copy = settings?.contact
 
   return (
-    <section id="contact" className="section-padding border-t border-border">
+    <section id="contact" className="section-padding">
       <div className="container-main">
         {copy?.eyebrow && <p className="mono-label mb-3">{copy.eyebrow}</p>}
         <h2 className="max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
