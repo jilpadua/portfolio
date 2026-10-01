@@ -8,7 +8,7 @@ export function ProjectOverview({ project }: ProjectOverviewProps) {
   if (!project.overview && !project.audience) return null
 
   return (
-    <section id="overview" className="case-study-section section-padding border-b border-border">
+    <section id="overview" className="case-study-section section-padding">
       <div className="container-main max-w-3xl">
         <h2 className="mono-label mb-4">Overview</h2>
         {project.overview && (

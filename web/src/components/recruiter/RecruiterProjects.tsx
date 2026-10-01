@@ -31,7 +31,7 @@ export function RecruiterProjects({ projects, settings }: RecruiterProjectsProps
   if (!projects.length) return null
 
   return (
-    <section id="recruiter-projects" className="section-padding border-b border-border">
+    <section id="recruiter-projects" className="section-padding">
       <div className="container-main">
         <h2 className="mono-label mb-2">
           {settings?.recruiter?.projects?.heading ?? 'Best projects'}
@@ -55,11 +55,10 @@ export function RecruiterProjects({ projects, settings }: RecruiterProjectsProps
                 type="button"
                 aria-pressed={isActive}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`rounded-md border px-3 py-1.5 text-sm transition-colors duration-200 motion-reduce:transition-none ${
-                  isActive
+                className={`rounded-md border px-3 py-1.5 text-sm transition-colors duration-200 motion-reduce:transition-none ${isActive
                     ? 'border-accent bg-accent text-accent-foreground'
                     : 'border-border bg-surface text-muted hover:text-foreground'
-                }`}
+                  }`}
               >
                 {filter.label}
               </button>

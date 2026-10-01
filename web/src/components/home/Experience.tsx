@@ -13,7 +13,7 @@ export function Experience({ items, eyebrow, heading, description }: ExperienceP
   if (!items.length) return null
 
   return (
-    <section id="experience" className="section-padding border-t border-border">
+    <section id="experience" className="section-padding">
       <div className="container-main">
         <SectionHeading
           eyebrow={eyebrow}

@@ -6,7 +6,7 @@ export function ArchitectureDiagram({ steps }: ArchitectureDiagramProps) {
   if (!steps?.length) return null
 
   return (
-    <section className="section-padding border-b border-border">
+    <section className="section-padding">
       <div className="container-main max-w-3xl">
         <h2 className="mono-label mb-6">Architecture</h2>
         <ol className="space-y-0">

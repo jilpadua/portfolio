@@ -9,7 +9,7 @@ export function About({ about }: AboutProps) {
   if (!about) return null
 
   return (
-    <section id="about" className="section-padding border-t border-border">
+    <section id="about" className="section-padding">
       <div className="container-main">
         <SectionHeading
           eyebrow={about.eyebrow}

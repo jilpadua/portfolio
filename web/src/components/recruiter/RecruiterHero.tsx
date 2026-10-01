@@ -19,7 +19,7 @@ export function RecruiterHero({ settings, experience, skillGroups }: RecruiterHe
     .slice(0, 8)
 
   return (
-    <section id="hero" className="section-padding border-b border-border pt-24 md:pt-28">
+    <section id="hero" className="section-padding pt-24 md:pt-28">
       <div className="container-main">
         {settings.recruiter?.modeLabel && (
           <p className="mono-label mb-4">{settings.recruiter.modeLabel}</p>
@@ -77,7 +77,7 @@ export function RecruiterQuickProfile({
   const currentRole = experience.find((item) => item.isCurrent)
 
   return (
-    <section className="section-padding border-b border-border bg-section">
+    <section className="section-padding bg-section">
       <div className="container-main max-w-4xl">
         <h2 className="mono-label mb-6">
           {settings.recruiter?.quickProfileHeading ?? 'Quick profile'}
