@@ -10,7 +10,7 @@ export function RecruiterCta({ settings }: RecruiterCtaProps) {
   if (!settings?.cvUrl && !settings?.github && !settings?.email) return null
 
   return (
-    <section id="contact" className="section-padding border-t border-border">
+    <section id="contact" className="section-padding">
       <div className="container-main max-w-3xl">
         <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
           {settings.recruiter?.ctaHeading ?? 'Interested in working together?'}

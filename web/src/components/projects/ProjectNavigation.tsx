@@ -19,7 +19,7 @@ export function ProjectNavigation({ currentSlug, projects }: ProjectNavigationPr
 
   return (
     <nav
-      className="section-padding border-t border-border"
+      className="section-padding"
       aria-label="Project navigation"
     >
       <div className="container-main grid gap-6 md:grid-cols-2">
