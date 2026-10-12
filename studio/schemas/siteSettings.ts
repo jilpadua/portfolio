@@ -66,6 +66,22 @@ export const siteSettings = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'profileImage',
+      title: 'Profile Picture',
+      type: 'image',
+      group: 'profile',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+        }),
+      ],
+    }),
+    defineField({
       name: 'focusLine',
       title: 'Focus Line',
       type: 'string',

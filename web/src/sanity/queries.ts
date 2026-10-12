@@ -6,6 +6,7 @@ export const siteSettingsQuery = groq`
     role,
     focusLine,
     summary,
+    profileImage,
     email,
     github,
     linkedin,

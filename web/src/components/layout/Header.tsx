@@ -16,9 +16,10 @@ const NAV_ITEMS = [
 ]
 
 const RECRUITER_NAV_ITEMS = [
-  { href: '/#recruiter-projects', label: 'Projects' },
-  { href: '/#experience', label: 'Experience' },
-  { href: '/#contact', label: 'Contact' },
+  { href: '#recruiter-skills', label: 'Skills' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#recruiter-projects', label: 'Projects' },
+  { href: '#contact', label: 'Contact' },
 ]
 
 type HeaderProps = {
