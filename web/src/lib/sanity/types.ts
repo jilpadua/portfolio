@@ -23,6 +23,7 @@ export type SiteSettings = {
   role: string
   focusLine?: string
   summary?: string
+  profileImage?: SanityImage
   email?: string
   github?: string
   linkedin?: string

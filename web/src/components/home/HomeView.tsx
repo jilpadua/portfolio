@@ -6,9 +6,7 @@ import { Experience } from '@/components/home/Experience'
 import { EngineeringFocus } from '@/components/home/EngineeringFocus'
 import { About } from '@/components/home/About'
 import { Contact } from '@/components/home/Contact'
-import { RecruiterHero, RecruiterQuickProfile } from '@/components/recruiter/RecruiterHero'
-import { RecruiterProjects } from '@/components/recruiter/RecruiterProjects'
-import { RecruiterCta } from '@/components/recruiter/RecruiterCta'
+import { RecruiterSingleSection } from '@/components/recruiter/RecruiterSingleSection'
 import { useRecruiterMode } from '@/components/recruiter/RecruiterModeProvider'
 import type {
   About as AboutType,
@@ -64,25 +62,12 @@ export function HomeView({
     const recruiterProjects = projects.filter((project) => project.featuredForRecruiters)
 
     return (
-      <>
-        <RecruiterHero settings={settings} experience={experience} skillGroups={skillGroups} />
-        <RecruiterQuickProfile
-          settings={settings}
-          experience={experience}
-          skillGroups={skillGroups}
-        />
-        <Experience
-          items={experience}
-          eyebrow={settings?.experience?.eyebrow}
-          heading={settings?.experience?.heading}
-          description={settings?.experience?.description}
-        />
-        <RecruiterProjects
-          projects={recruiterProjects.length ? recruiterProjects : projects}
-          settings={settings}
-        />
-        <RecruiterCta settings={settings} />
-      </>
+      <RecruiterSingleSection
+        settings={settings}
+        experience={experience}
+        skillGroups={skillGroups}
+        projects={recruiterProjects.length ? recruiterProjects : projects}
+      />
     )
   }
 
