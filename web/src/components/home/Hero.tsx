@@ -59,11 +59,7 @@ export function Hero({ settings }: HeroProps) {
 
           <div className="flex justify-start md:justify-end">
             <div className="group relative">
-              <div
-                className="absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-accent/30 via-accent/10 to-transparent opacity-60 blur-md transition duration-500 group-hover:opacity-100"
-                aria-hidden="true"
-              />
-              <div className="relative h-44 w-44 sm:h-52 sm:w-52 md:h-60 md:w-60 lg:h-68 lg:w-68 overflow-hidden rounded-2xl border border-border bg-surface shadow-md">
+              <div className="relative h-44 w-44 sm:h-52 sm:w-52 md:h-60 md:w-60 lg:h-68 lg:w-68 overflow-hidden rounded-2xl border border-border bg-surface">
                 {profileImageUrl ? (
                   <Image
                     src={profileImageUrl}
