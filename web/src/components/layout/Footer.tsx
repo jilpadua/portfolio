@@ -1,3 +1,6 @@
+'use client'
+
+import { useRecruiterMode } from '@/components/recruiter/RecruiterModeProvider'
 import { TrackedLink } from '@/components/analytics/TrackedLink'
 import type { SiteSettings } from '@/lib/sanity/types'
 
@@ -6,6 +9,13 @@ type FooterProps = {
 }
 
 export function Footer({ settings }: FooterProps) {
+  const { isRecruiterMode, isReady } = useRecruiterMode()
+
+  // In recruiter mode, the 16:9 recruiter single-section contains its own action bar and fits 100vh
+  if (isReady && isRecruiterMode) {
+    return null
+  }
+
   const year = new Date().getFullYear()
 
   return (
